@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1a1218" />
+  <title>Opal Land — уютный Minecraft SMP</title>
+  <meta name="description" content="Opal Land — чистый SMP сервер Minecraft. Java 1.21.11, милое сообщество, надёжный античит и уютная атмосфера. IP: opal.cubzx.xyz" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=VT323&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+  <!-- Пиксельное небо и плавающие облака -->
+  <div class="sky-layer" aria-hidden="true">
+    <div class="sun"></div>
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="cloud cloud-4"></div>
+    <div class="stars" id="stars"></div>
+  </div>
+
+  <!-- Пиксельный ландшафт майнкрафт -->
+  <div class="ground-layer" aria-hidden="true">
+    <div class="grass-hills">
+      <div class="hill hill-back"></div>
+      <div class="hill hill-mid"></div>
+      <div class="hill hill-front"></div>
+    </div>
+    <div class="pixel-scene">
+      <div class="tree tree-1"></div>
+      <div class="tree tree-2"></div>
+      <div class="tree tree-3"></div>
+      <div class="cute-house"></div>
+      <div class="flower flower-1"></div>
+      <div class="flower flower-2"></div>
+      <div class="flower flower-3"></div>
+      <div class="flower flower-4"></div>
+    </div>
+  </div>
+
+  <!-- Маленькие пиксельные партиклы -->
+  <canvas class="particle-canvas" id="particles" aria-hidden="true"></canvas>
+
+  <!-- Навигация -->
+  <nav class="main-nav" id="nav">
+    <a href="#top" class="nav-brand">
+      <span class="brand-icon" aria-hidden="true">◆</span>
+      <span class="brand-text">Opal Land</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">О сервере</a></li>
+      <li><a href="#rules">Правила</a></li>
+      <li><a href="#join">Как зайти</a></li>
+      <li><a href="#contacts">Контакты</a></li>
+    </ul>
+    <a href="#join" class="nav-cta">Играть</a>
+  </nav>
+
+  <!-- Герой -->
+  <header class="hero" id="top">
+    <div class="hero-card">
+      <div class="hero-pretitle">
+        <span class="heart-pulse">💗</span>
+        уютный Minecraft SMP
+      </div>
+      <h1 class="hero-title">
+        <span class="title-line">Opal</span>
+        <span class="title-line title-line-2">Land</span>
+      </h1>
+      <p class="hero-desc">
+        Чистое выживание без лишнего. Только ты, твои друзья и бесконечный кубический мир. 
+        Без донатов, без экономики, без читеров — только честный SMP в самом мягком и уютном формате.
+      </p>
+      <div class="hero-actions">
+        <a href="#join" class="btn btn-primary">Как зайти</a>
+        <a href="https://t.me/opal_land" target="_blank" class="btn btn-ghost">Telegram</a>
+      </div>
+      <div class="server-ip-card">
+        <div class="ip-info">
+          <span class="ip-label">IP сервера</span>
+          <span class="ip-value" id="ipValue">opal.cubzx.xyz</span>
+        </div>
+        <button class="copy-btn" id="copyIp" data-ip="opal.cubzx.xyz" type="button">
+          <span class="copy-icon">📋</span>
+          <span class="copy-text">Копировать</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Бегущая лента -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Java 1.21.11</span>
+      <span>чистый SMP</span>
+      <span>милое сообщество</span>
+      <span>анти-чит</span>
+      <span>без донатов</span>
+      <span>без экономики</span>
+      <span>голосовой чат</span>
+      <span>уязые вайпы</span>
+      <span>Java 1.21.11</span>
+      <span>чистый SMP</span>
+      <span>милое сообщество</span>
+      <span>анти-чит</span>
+    </div>
+  </div>
+
+  <!-- О сервере -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">о сервере</span>
+        <h2 class="section-title">Здесь нет лишнего,<br>только майнкрафт</h2>
+        <p class="section-subtitle">
+          Мы сделали сервер для тех, кто скучал по настоящему выживанию. 
+          Без донат-валют, без громких ивентов и без гриндеров, ломающих баланс.
+        </p>
+      </div>
+
+      <div class="features">
+        <div class="feature-card reveal">
+          <div class="feature-icon" aria-hidden="true">🌸</div>
+          <h3 class="feature-title">Чистый SMP</h3>
+          <p class="feature-text">
+            Никаких денег, платных префиксов и экономики. Все ресурсы получены честно, 
+            а города и торговля строятся на доверии и договорённостях.
+          </p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon" aria-hidden="true">🛡️</div>
+          <h3 class="feature-title">Сборка античитов</h3>
+          <p class="feature-text">
+            Наш античит настроен так жёстко, что ловит даже самые беспалевные читы 
+            с максимальным легит-режимом. Играй честно и спи спокойно.
+          </p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon" aria-hidden="true">🎙️</div>
+          <h3 class="feature-title">Simple Voice Chat</h3>
+          <p class="feature-text">
+            Голосовое общение прямо в игре. Обсуждай планы, шути во время копания 
+            или просто болтай с соседями в голос — всё это делает игру уютнее.
+          </p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon" aria-hidden="true">🌿</div>
+          <h3 class="feature-title">Предзагруженный мир</h3>
+          <p class="feature-text">
+            Мир прогружен заранее, поэтому исследование не вызывает лагов, 
+            а пинг остаётся комфортным даже в напряжённых моментах.
+          </p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon" aria-hidden="true">🏠</div>
+          <h3 class="feature-title">Уютная атмосфера</h3>
+          <p class="feature-text">
+            Мы ценим вежливость и помощь новичкам. На сервере не кричат, 
+            не гриферят ради токсика и не мешают другим строить.
+          </p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon" aria-hidden="true">🗺️</div>
+          <h3 class="feature-title">Защита кординат</h3>
+          <p class="feature-text">
+            При логине ты появляешься на спавне, а только потом возвращаешься 
+            в точку выхода. Твоя база в безопасности.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Большая карточка "почему мы" -->
+  <section class="section section-soft" id="why">
+    <div class="container">
+      <div class="big-card reveal">
+        <div class="big-card-content">
+          <span class="section-tag">почему мы</span>
+          <h2 class="section-title big-title">Доброе комьюнити</h2>
+          <p class="section-subtitle big-subtitle">
+            Opal Land — это не просто сервер, а маленькое дружное сообщество. 
+            Здесь помогают новичкам, делятся ресурсами, вместе строят города 
+            и весело проводят время. Админ всегда на связи и прислушивается к мнению игроков, 
+            поэтому каждый может повлиять на будущее сервера.
+          </p>
+          <div class="stat-row">
+            <div class="stat-item">
+              <span class="stat-number">1.21.11</span>
+              <span class="stat-label">рекомендуемая версия</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">SMP</span>
+              <span class="stat-label">чистое выживание</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">0</span>
+              <span class="stat-label">донатных преимуществ</span>
+            </div>
+          </div>
+        </div>
+        <div class="big-card-art card-image" aria-hidden="true">
+          <img src="assets/how-to-join.png" alt="Как зайти на сервер Opal Land" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Правила -->
+  <section class="section" id="rules">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">правила</span>
+        <h2 class="section-title">Просто не будь...</h2>
+        <p class="section-subtitle">Мы не любим длинные своды правил. Достаточно быть вежливым и честным.</p>
+      </div>
+
+      <div class="rules-grid">
+        <div class="rule-card reveal">
+          <span class="rule-num">01</span>
+          <h3>Без читов и багов</h3>
+          <p>Античит всё равно поймает, а админ может забанить вручную. Зачем себе портить игру?</p>
+        </div>
+        <div class="rule-card reveal">
+          <span class="rule-num">02</span>
+          <h3>Без гриферства</h3>
+          <p>Не трогай чужие постройки, сундуки и фермы без разрешения. Уважай труд других.</p>
+        </div>
+        <div class="rule-card reveal">
+          <span class="rule-num">03</span>
+          <h3>Без токсика</h3>
+          <p>Маты, оскорбления, травля и провокации — не сюда. Мы за уют и комфорт.</p>
+        </div>
+        <div class="rule-card reveal">
+          <span class="rule-num">04</span>
+          <h3>Без спам-рекламы</h3>
+          <p>В чате игры и в голосе — реклама других проектов запрещена.</p>
+        </div>
+        <div class="rule-card reveal">
+          <span class="rule-num">05</span>
+          <h3>Слушай администрацию</h3>
+          <p>Админ решает спорные ситуации и имеет право на окончательное слово.</p>
+        </div>
+        <div class="rule-card reveal">
+          <span class="rule-num">06</span>
+          <h3>Играй ради фана</h3>
+          <p>Главное — хорошее настроение. Не забывай, что это всего лишь игра :)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Как зайти -->
+  <section class="section section-cta" id="join">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">как зайти</span>
+        <h2 class="section-title">Начни своё путешествие</h2>
+        <p class="section-subtitle">Четыре простых шага — и ты уже строишь свой первый дом в Opal Land.</p>
+      </div>
+
+      <div class="join-flow">
+        <div class="flow-line" aria-hidden="true"></div>
+        <div class="steps">
+          <div class="step reveal">
+            <div class="step-number">1</div>
+            <div class="step-icon">⬇️</div>
+            <h3>Установи Minecraft</h3>
+            <p>Java Edition версия <strong>1.21.11</strong>. С 1.21+ тоже работает, но все фичи доступны на 1.21.11.</p>
+          </div>
+          <div class="step reveal">
+            <div class="step-number">2</div>
+            <div class="step-icon">🎙️</div>
+            <h3>Simple Voice Chat</h3>
+            <p>Добавь мод <strong>Simple Voice Chat</strong> для голосового общения в игре. Без мода сервер тоже работает.</p>
+          </div>
+          <div class="step reveal">
+            <div class="step-number">3</div>
+            <div class="step-icon">📋</div>
+            <h3>Добавь адрес</h3>
+            <p>В мультиплеере добавь сервер с адресом <strong class="ip-highlight">opal.cubzx.xyz</strong>.</p>
+          </div>
+          <div class="step reveal">
+            <div class="step-number">4</div>
+            <div class="step-icon">✨</div>
+            <h3>Играй!</h3>
+            <p>Заходи на сервер, появляйся на спавне и отправляйся в свою точку. Добро пожаловать!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="join-card reveal">
+        <div class="join-card-left">
+          <span class="join-badge">🎮 IP сервера</span>
+          <div class="join-ip">opal.cubzx.xyz</div>
+          <p class="join-meta">Java Edition · версия 1.21+ · рекомендуемая 1.21.11</p>
+        </div>
+        <button class="copy-btn copy-btn-big" id="copyIpBig" data-ip="opal.cubzx.xyz" type="button">
+          <span class="copy-icon">📋</span>
+          <span class="copy-text">Копировать IP</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Контакты -->
+  <section class="section section-contacts" id="contacts">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">контакты</span>
+        <h2 class="section-title">Оставайся с нами</h2>
+        <p class="section-subtitle">Присоединяйся к сообществу — здесь мы делимся новостями, анонсируем вайпы и просто болтаем.</p>
+      </div>
+
+      <div class="contacts">
+        <a href="https://t.me/opal_land" target="_blank" class="contact-card reveal" rel="noopener">
+          <span class="contact-emoji">✈️</span>
+          <div class="contact-body">
+            <h3>Telegram-канал</h3>
+            <p>Новости, вайпы и обновления</p>
+          </div>
+          <span class="contact-arrow">→</span>
+        </a>
+        <a href="https://discord.gg/sgVRyRgncg" target="_blank" class="contact-card reveal" rel="noopener">
+          <span class="contact-emoji">💬</span>
+          <div class="contact-body">
+            <h3>Discord-сервер</h3>
+            <p>Голосовые лобби и общение</p>
+          </div>
+          <span class="contact-arrow">→</span>
+        </a>
+        <a href="https://t.me/Phant0mNight" target="_blank" class="contact-card reveal" rel="noopener">
+          <span class="contact-emoji">👑</span>
+          <div class="contact-body">
+            <h3>Администратор</h3>
+            <p>Вопросы и предложения</p>
+          </div>
+          <span class="contact-arrow">→</span>
+        </a>
+      </div>
+
+      <div class="contact-footer reveal">
+        <p>Мы всегда рады новым друзьям и хорошим идеям 💗</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Футер -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <span class="footer-icon" aria-hidden="true">◆</span>
+        <span>Opal Land</span>
+      </div>
+      <p class="footer-desc">Уютный Minecraft SMP. Java 1.21.11. Чистое выживание без донатов.</p>
+      <div class="footer-links">
+        <a href="https://t.me/opal_land" target="_blank" rel="noopener">Telegram</a>
+        <a href="https://discord.gg/sgVRyRgncg" target="_blank" rel="noopener">Discord</a>
+        <a href="https://t.me/Phant0mNight" target="_blank" rel="noopener">Админ</a>
+      </div>
+      <p class="footer-copy">Не связано с Mojang Studios или Microsoft.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

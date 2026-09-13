@@ -1,0 +1,47 @@
+/* ============================================================
+   OPAL LAND — extra animations (soft & bouncy)
+   ============================================================ */
+
+/* Floating particles canvas is handled in JS; these are keyframes */
+
+/* Hero card entrance */
+.hero-card{
+  animation:cardIn 1s var(--ease-slow) both;
+}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(40px) scale(.95)}
+  to{opacity:1;transform:none}
+}
+
+/* Title letters stagger */
+.title-line{animation:titleDrop .9s var(--ease) both}
+.title-line-2{animation:titleDrop .9s var(--ease) .12s both}
+@keyframes titleDrop{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:none}
+}
+
+/* Soft heartbeat for decorative emojis */
+.bounce-soft{
+  display:inline-block;
+  animation:bounceSoft 2.8s ease-in-out infinite;
+}
+@keyframes bounceSoft{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-5px)}
+}
+
+/* Link hover underline grow */
+.nav-links a{position:relative}
+.nav-links a::after{
+  content:"";
+  position:absolute;
+  bottom:6px;
+  left:14px;
+  width:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--pink),var(--lavender));
+  border-radius:2px;
+  transition:width .3s var(--ease-slow);
+}
+.nav-links a:hover::after{width:calc(100% - 28px)}
