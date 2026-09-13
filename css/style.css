@@ -799,6 +799,155 @@ a{color:inherit;text-decoration:none}
 }
 .contact-footer p{margin:0}
 
+/* ============================================================
+   DONATE
+   ============================================================ */
+.section-donate{background:linear-gradient(180deg, rgba(255,183,197,.04) 0%, transparent 100%)}
+.donate-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+  align-items:stretch;
+}
+.donate-card{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  padding:28px;
+  border-radius:var(--radius);
+  background:rgba(24,18,27,.68);
+  border:1px solid var(--stroke);
+  transition:transform .35s var(--ease), box-shadow .35s, background .35s;
+  position:relative;
+  overflow:hidden;
+}
+.donate-card:hover{
+  transform:translateY(-7px);
+  background:rgba(34,26,37,.82);
+  box-shadow:0 24px 50px -24px rgba(255,183,197,.30);
+}
+.donate-card-featured{
+  background:
+    linear-gradient(135deg, rgba(255,183,197,.12), rgba(220,201,255,.10) 50%, rgba(183,240,212,.08)),
+    rgba(24,18,27,.78);
+  border-color:rgba(255,183,197,.35);
+  box-shadow:0 0 40px -10px rgba(255,183,197,.20);
+}
+.donate-card-featured::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:4px;
+  background:linear-gradient(90deg,var(--pink),var(--lavender),var(--mint));
+  opacity:.7;
+}
+.donate-header{position:relative;z-index:1}
+.donate-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:5px 12px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#4a2b33;
+  background:linear-gradient(120deg,var(--pink-light),var(--lavender));
+  margin-bottom:12px;
+}
+.donate-tier{
+  font-size:24px;
+  font-weight:900;
+  color:#fff;
+  margin:0 0 4px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.donate-desc{
+  color:var(--ink-soft);
+  font-size:14px;
+  margin:0;
+}
+.donate-price{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+  margin-top:auto;
+  padding-top:8px;
+  border-top:1px dashed var(--stroke);
+}
+.price-amount{
+  font-family:'VT323',monospace;
+  font-size:42px;
+  color:#fff;
+  line-height:1;
+}
+.price-note{
+  font-size:13px;
+  color:var(--ink-soft);
+  text-transform:lowercase;
+}
+.donate-price-alt{
+  font-size:13px;
+  color:var(--pink-light);
+  font-weight:700;
+  margin-top:-8px;
+}
+.donate-commands{
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.donate-commands li{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:14.5px;
+  color:var(--ink-soft);
+}
+.donate-commands li::before{
+  content:"◆";
+  color:var(--pink);
+  font-size:10px;
+}
+.donate-commands code{
+  font-family:'VT323',monospace;
+  font-size:16px;
+  color:#fff;
+  background:rgba(255,255,255,.08);
+  padding:2px 8px;
+  border-radius:6px;
+  border:1px solid var(--stroke);
+}
+.donate-includes{
+  margin-top:auto;
+  padding:10px 14px;
+  border-radius:10px;
+  background:rgba(183,240,212,.10);
+  border:1px solid rgba(183,240,212,.18);
+  color:var(--mint-light, #b7f0d4);
+  font-size:13px;
+  font-weight:700;
+}
+.donate-notice{
+  max-width:800px;
+  margin:42px auto 0;
+  padding:18px 24px;
+  border-radius:var(--radius);
+  background:rgba(255,183,197,.08);
+  border:1px dashed rgba(255,183,197,.30);
+  color:var(--ink-soft);
+  font-size:15px;
+  text-align:center;
+}
+.donate-notice p{margin:0}
 
 /* ============================================================
    FOOTER
@@ -875,14 +1024,14 @@ a{color:inherit;text-decoration:none}
    RESPONSIVE
    ============================================================ */
 @media(max-width:1024px){
-  .features,.rules-grid,.contacts{grid-template-columns:repeat(2,1fr)}
+  .features,.rules-grid,.contacts,.donate-grid{grid-template-columns:repeat(2,1fr)}
   .steps{grid-template-columns:repeat(2,1fr)}
   .big-card{grid-template-columns:1fr}
 }
 @media(max-width:700px){
   .main-nav{padding:8px 10px 8px 14px}
   .nav-links{display:none}
-  .features,.rules-grid,.contacts,.steps{grid-template-columns:1fr}
+  .features,.rules-grid,.contacts,.steps,.donate-grid{grid-template-columns:1fr}
   .hero{padding:110px 16px 70px}
   .hero-card{padding:32px 22px}
   .section{padding:70px 16px}
@@ -893,6 +1042,7 @@ a{color:inherit;text-decoration:none}
   .step{padding-top:36px}
   .contact-card{flex-direction:row;align-items:center}
   .contact-arrow{align-self:center;margin-top:0}
+  .donate-card-featured{order:-1}
 }
 
 @media(prefers-reduced-motion:reduce){
