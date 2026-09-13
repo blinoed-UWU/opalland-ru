@@ -953,6 +953,23 @@ a{color:inherit;text-decoration:none}
   border-color:rgba(183,240,212,.30);
 }
 
+.twemoji{
+  width:1em;
+  height:1em;
+  display:inline-block;
+  vertical-align:middle;
+  margin-top:-0.1em;
+}
+.feature-icon .twemoji,
+.step-icon .twemoji,
+.service-icon .twemoji,
+.purchase-icon .twemoji,
+.contact-emoji .twemoji{
+  width:60%;
+  height:60%;
+  object-fit:contain;
+}
+
 .donate-purchase{
   display:flex;
   flex-wrap:wrap;
