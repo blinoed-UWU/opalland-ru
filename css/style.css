@@ -876,7 +876,6 @@ a{color:inherit;text-decoration:none}
   display:flex;
   align-items:baseline;
   gap:8px;
-  margin-top:auto;
   padding-top:8px;
   border-top:1px dashed var(--stroke);
 }
@@ -925,6 +924,7 @@ a{color:inherit;text-decoration:none}
   padding:2px 8px;
   border-radius:6px;
   border:1px solid var(--stroke);
+  white-space:nowrap;
 }
 .donate-includes{
   margin-top:auto;
