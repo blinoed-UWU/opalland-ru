@@ -37,10 +37,6 @@
       <div class="tree tree-2"></div>
       <div class="tree tree-3"></div>
       <div class="cute-house"></div>
-      <div class="flower flower-1"></div>
-      <div class="flower flower-2"></div>
-      <div class="flower flower-3"></div>
-      <div class="flower flower-4"></div>
     </div>
   </div>
 
@@ -53,7 +49,10 @@
       <span class="brand-icon" aria-hidden="true">◆</span>
       <span class="brand-text">Opal Land</span>
     </a>
-    <ul class="nav-links">
+    <button class="nav-burger" id="navBurger" aria-label="Открыть меню" aria-expanded="false" aria-controls="navMenu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navMenu">
       <li><a href="#about">О сервере</a></li>
       <li><a href="#rules">Правила</a></li>
       <li><a href="#donate">Донаты</a></li>
@@ -389,7 +388,6 @@
           <ul class="donate-commands">
             <li><code>/crafts</code> — открыть верстак</li>
             <li><code>/clear</code> — очистить инвентарь</li>
-            <li><code>/feed</code> — насытить себя</li>
             <li><code>/weather</code> — управление погодой</li>
           </ul>
           <div class="donate-includes">
@@ -524,6 +522,13 @@
       <p class="footer-copy">Не связано с Mojang Studios или Microsoft.</p>
     </div>
   </footer>
+
+  <button class="scroll-top" id="scrollTop" aria-label="Наверх" title="Наверх">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="19" x2="12" y2="5"></line>
+      <polyline points="5 12 12 5 19 12"></polyline>
+    </svg>
+  </button>
 
   <script src="js/main.js"></script>
 </body>

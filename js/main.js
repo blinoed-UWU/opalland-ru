@@ -82,12 +82,60 @@ window.addEventListener('scroll', () => {
   }
 }, { passive: true });
 
+/* ---------- mobile nav ---------- */
+const burger = document.getElementById('navBurger');
+const menu = document.getElementById('navMenu');
+if (burger && menu) {
+  burger.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', String(open));
+  });
+  menu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      menu.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
+
+/* ---------- smooth anchor scroll ---------- */
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+/* ---------- scroll to top ---------- */
+const scrollTopBtn = document.getElementById('scrollTop');
+if (scrollTopBtn) {
+  window.addEventListener('scroll', () => {
+    scrollTopBtn.classList.toggle('visible', window.scrollY > 600);
+  }, { passive: true });
+  scrollTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
 /* ---------- falling petal / heart particles ---------- */
 (function initParticles() {
   const canvas = document.getElementById('particles');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const symbols = ['🌸', '✨', '🍃', '💖', '🌷'];
+  const imageUrls = [
+    'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f338.svg',
+    'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/2728.svg',
+    'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f343.svg',
+    'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f496.svg',
+    'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f337.svg',
+  ];
+  const images = imageUrls.map(src => {
+    const img = new Image();
+    img.src = src;
+    return img;
+  });
   let particles = [];
   let width, height;
 
@@ -111,28 +159,45 @@ window.addEventListener('scroll', () => {
       this.swaySpeed = Math.random() * 0.02 + 0.01;
       this.angle = Math.random() * Math.PI * 2;
       this.opacity = Math.random() * 0.35 + 0.15;
-      this.symbol = symbols[Math.floor(Math.random() * symbols.length)];
+      this.image = images[Math.floor(Math.random() * images.length)];
+      this.rotation = Math.random() * Math.PI * 2;
+      this.rotationSpeed = (Math.random() - 0.5) * 0.02;
     }
     update() {
       this.y += this.speed;
       this.angle += this.swaySpeed;
+      this.rotation += this.rotationSpeed;
       this.x += Math.sin(this.angle) * this.sway * 0.3;
       if (this.y > height + 30) this.reset();
     }
     draw() {
+      if (!this.image.complete) return;
+      ctx.save();
       ctx.globalAlpha = this.opacity;
-      ctx.font = `${this.size}px Nunito, sans-serif`;
-      ctx.fillText(this.symbol, this.x, this.y);
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.rotation);
+      ctx.drawImage(this.image, -this.size / 2, -this.size / 2, this.size, this.size);
+      ctx.restore();
     }
   }
 
-  const count = window.matchMedia('(pointer: coarse)').matches ? 18 : 30;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const count = reduceMotion ? 0 : (window.matchMedia('(pointer: coarse)').matches ? 18 : 26);
   for (let i = 0; i < count; i++) particles.push(new Particle());
 
+  let rafId;
   function loop() {
     ctx.clearRect(0, 0, width, height);
     particles.forEach(p => { p.update(); p.draw(); });
-    requestAnimationFrame(loop);
+    rafId = requestAnimationFrame(loop);
   }
   loop();
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      cancelAnimationFrame(rafId);
+    } else {
+      loop();
+    }
+  });
 })();
