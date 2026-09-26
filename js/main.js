@@ -32,6 +32,77 @@ document.querySelectorAll('[data-ip]').forEach(btn => {
   });
 });
 
+/* ---------- live server status (mcsrvstat.us API) ---------- */
+(async function initServerStatus() {
+  const el = document.getElementById('serverStatus');
+  if (!el) return;
+  const dot = el.querySelector('.status-dot');
+  const text = el.querySelector('.status-text');
+
+  try {
+    const res = await fetch('https://api.mcsrvstat.us/3/opal.cubzx.xyz');
+    if (!res.ok) throw new Error('status api error');
+    const data = await res.json();
+
+    if (data.online) {
+      el.classList.add('is-online');
+      dot.classList.remove('status-dot-loading');
+      dot.classList.add('status-dot-online');
+      const players = data.players ? data.players.online : 0;
+      text.innerHTML = players > 0
+        ? `Сервер онлайн — <span class="status-players">${players}</span> ${plural(players, 'игрок', 'игрока', 'игроков')}`
+        : 'Сервер онлайн';
+    } else {
+      dot.classList.remove('status-dot-loading');
+      dot.classList.add('status-dot-offline');
+      text.textContent = 'Сервер сейчас offline';
+    }
+  } catch (err) {
+    // API недоступен — показываем нейтральный статус
+    dot.classList.remove('status-dot-loading');
+    text.textContent = 'opal.cubzx.xyz · Java 1.21+';
+  }
+
+  function plural(n, one, few, many) {
+    const mod10 = n % 10, mod100 = n % 100;
+    if (mod10 === 1 && mod100 !== 11) return one;
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
+    return many;
+  }
+})();
+
+/* ---------- scroll progress bar ---------- */
+(function initScrollProgress() {
+  const bar = document.getElementById('scrollProgress');
+  if (!bar) return;
+  const update = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+    bar.style.width = pct + '%';
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  update();
+})();
+
+/* ---------- active nav link on scroll ---------- */
+(function initActiveNav() {
+  const links = document.querySelectorAll('.nav-links a[href^="#"]');
+  if (!links.length) return;
+  const sections = [...links]
+    .map(l => document.querySelector(l.getAttribute('href')))
+    .filter(Boolean);
+
+  const activate = () => {
+    const pos = window.scrollY + window.innerHeight * 0.35;
+    let current = sections[0];
+    sections.forEach(s => { if (s.offsetTop <= pos) current = s; });
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current.id));
+  };
+  window.addEventListener('scroll', activate, { passive: true });
+  activate();
+})();
+
 /* ---------- scroll reveal ---------- */
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {

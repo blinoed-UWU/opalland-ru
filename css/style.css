@@ -66,7 +66,7 @@ a{color:inherit;text-decoration:none}
   inset:0;
   z-index:-3;
   background:
-    linear-gradient(180deg, rgba(10,8,14,.85) 0%, rgba(10,8,14,.78) 60%, rgba(16,12,20,.7) 100%),
+    linear-gradient(180deg, rgba(10,8,14,.78) 0%, rgba(10,8,14,.70) 60%, rgba(16,12,20,.62) 100%),
     url('../assets/bg.jpg') center/cover no-repeat;
   overflow:hidden;
 }
@@ -93,6 +93,67 @@ a{color:inherit;text-decoration:none}
   inset:0;
   z-index:-1;
   pointer-events:none;
+}
+
+/* ============================================================
+   SCROLL PROGRESS BAR
+   ============================================================ */
+.scroll-progress{
+  position:fixed;
+  top:0;
+  left:0;
+  height:3px;
+  width:0;
+  z-index:200;
+  background:linear-gradient(90deg,var(--pink),var(--lavender),var(--mint));
+  box-shadow:0 0 10px rgba(255,183,197,.6);
+  transition:width .1s linear;
+}
+
+/* ============================================================
+   SERVER STATUS PILL
+   ============================================================ */
+.server-status{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 14px;
+  border-radius:999px;
+  font-size:12.5px;
+  font-weight:800;
+  color:var(--ink-soft);
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--stroke);
+  margin-bottom:18px;
+}
+.status-dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  flex:none;
+}
+.status-dot-online{
+  background:var(--mint-dark);
+  box-shadow:0 0 8px var(--mint-dark);
+  animation:statusPulse 2s ease-in-out infinite;
+}
+.status-dot-offline{
+  background:#ff8f8f;
+  box-shadow:0 0 8px #ff8f8f;
+}
+.status-dot-loading{
+  background:var(--ink-dim);
+}
+@keyframes statusPulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.6;transform:scale(.85)}
+}
+.server-status .status-players{
+  color:var(--mint-dark);
+}
+.server-status.is-online{
+  border-color:rgba(183,240,212,.35);
+  background:rgba(183,240,212,.08);
 }
 
 /* ============================================================
@@ -232,7 +293,7 @@ a{color:inherit;text-decoration:none}
 .hero-pretitle{
   display:inline-flex;
   align-items:center;
-  gap:8px;
+  gap:10px;
   padding:8px 16px;
   border-radius:999px;
   font-size:13px;
@@ -539,6 +600,12 @@ a{color:inherit;text-decoration:none}
   transition:transform .6s var(--ease-slow);
 }
 .big-card:hover .big-card-art img{transform:scale(1.04)}
+.pixel-scene-svg{
+  width:100%;
+  height:100%;
+  display:block;
+  image-rendering:pixelated;
+}
 .art-block, .art-sheep, .art-flower{display:none}
 
 /* fallback if no image */
@@ -1133,6 +1200,80 @@ a{color:inherit;text-decoration:none}
 }
 
 /* ============================================================
+   FAQ
+   ============================================================ */
+.section-faq{background:linear-gradient(180deg, rgba(192,233,255,.03) 0%, transparent 100%)}
+.faq-list{
+  max-width:760px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.faq-item{
+  background:rgba(24,18,27,.62);
+  border:1px solid var(--stroke);
+  border-radius:var(--radius-sm);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  overflow:hidden;
+  transition:border-color .3s, background .3s;
+}
+.faq-item[open]{
+  border-color:rgba(255,183,197,.35);
+  background:rgba(34,26,37,.78);
+}
+.faq-item summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:20px 24px;
+  font-size:16px;
+  font-weight:800;
+  color:#fff;
+  cursor:pointer;
+  list-style:none;
+  user-select:none;
+}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-arrow{
+  flex:none;
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:rgba(255,255,255,.06);
+  color:var(--pink);
+  font-weight:900;
+  transition:transform .3s var(--ease), background .3s;
+}
+.faq-item[open] .faq-arrow{
+  transform:rotate(90deg);
+  background:rgba(255,183,197,.15);
+}
+.faq-body{
+  padding:0 24px 20px;
+  color:var(--ink-soft);
+  font-size:15px;
+  line-height:1.6;
+}
+.faq-body p{margin:0}
+.faq-body a{
+  color:var(--pink-light);
+  text-decoration:underline;
+  text-underline-offset:3px;
+}
+.faq-item:hover{background:rgba(34,26,37,.7)}
+
+/* active nav link */
+.nav-links a.active{
+  color:#fff;
+  background:rgba(255,183,197,.14);
+}
+
+/* ============================================================
    FOOTER
    ============================================================ */
 .site-footer{
@@ -1284,4 +1425,5 @@ a{color:inherit;text-decoration:none}
 @media(prefers-reduced-motion:reduce){
   .cloud,.sun,.marquee-track,.flower,.art-block,.art-sheep{animation:none}
   .reveal{opacity:1;transform:none}
+  .scroll-progress{transition:none}
 }

@@ -6,47 +6,68 @@
   <meta name="theme-color" content="#1a1218" />
   <title>Opal Land — уютный Minecraft SMP</title>
   <meta name="description" content="Opal Land — чистый SMP сервер Minecraft. Java 1.21.11, милое сообщество, надёжный античит и уютная атмосфера. IP: opal.cubzx.xyz" />
-  <link rel="icon" href="assets/avatar.jpg?v=2" type="image/jpeg" />
+
+  <!-- SEO -->
+  <link rel="canonical" href="https://blinoed-uwu.github.io/opalland-ru/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Opal Land" />
+  <meta property="og:title" content="Opal Land — уютный Minecraft SMP" />
+  <meta property="og:description" content="Чистое выживание без лишнего. Java 1.21.11, милое сообщество, античит, голосовой чат. IP: opal.cubzx.xyz" />
+  <meta property="og:url" content="https://blinoed-uwu.github.io/opalland-ru/" />
+  <meta property="og:image" content="https://blinoed-uwu.github.io/opalland-ru/assets/og-scene.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Opal Land — уютный Minecraft SMP. Пиксельный ночной пейзаж с розовой луной и вишнёвыми деревьями" />
+  <meta property="og:locale" content="ru_RU" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Opal Land — уютный Minecraft SMP" />
+  <meta name="twitter:description" content="Чистое выживание без лишнего. IP: opal.cubzx.xyz" />
+  <meta name="twitter:image" content="https://blinoed-uwu.github.io/opalland-ru/assets/og-scene.png" />
+
+  <!-- Icons -->
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="icon" href="assets/favicon-64.png" sizes="64x64" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=VT323&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/animations.css" />
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Opal Land",
+    "url": "https://blinoed-uwu.github.io/opalland-ru/",
+    "logo": "https://blinoed-uwu.github.io/opalland-ru/assets/opal-gem.png",
+    "description": "Уютный Minecraft SMP сервер. Чистое выживание, Java 1.21.11.",
+    "sameAs": [
+      "https://t.me/opal_land",
+      "https://discord.gg/sgVRyRgncg"
+    ]
+  }
+  </script>
 </head>
 <body>
 
-  <!-- Пиксельное небо и плавающие облака -->
+  <!-- Пиксельное небо -->
   <div class="sky-layer" aria-hidden="true">
-    <div class="sun"></div>
-    <div class="cloud cloud-1"></div>
-    <div class="cloud cloud-2"></div>
-    <div class="cloud cloud-3"></div>
-    <div class="cloud cloud-4"></div>
     <div class="stars" id="stars"></div>
-  </div>
-
-  <!-- Пиксельный ландшафт майнкрафт -->
-  <div class="ground-layer" aria-hidden="true">
-    <div class="grass-hills">
-      <div class="hill hill-back"></div>
-      <div class="hill hill-mid"></div>
-      <div class="hill hill-front"></div>
-    </div>
-    <div class="pixel-scene">
-      <div class="tree tree-1"></div>
-      <div class="tree tree-2"></div>
-      <div class="tree tree-3"></div>
-      <div class="cute-house"></div>
-    </div>
   </div>
 
   <!-- Маленькие пиксельные партиклы -->
   <canvas class="particle-canvas" id="particles" aria-hidden="true"></canvas>
 
+  <!-- Прогресс-бар чтения -->
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
   <!-- Навигация -->
   <nav class="main-nav" id="nav">
     <a href="#top" class="nav-brand">
-      <img src="assets/avatar.jpg?v=2" alt="" class="brand-avatar" width="28" height="28" aria-hidden="true">
+      <img src="assets/opal-gem.png" alt="" class="brand-avatar" width="28" height="28" aria-hidden="true">
       <span class="brand-text">Opal Land</span>
     </a>
     <button class="nav-burger" id="navBurger" aria-label="Открыть меню" aria-expanded="false" aria-controls="navMenu">
@@ -57,6 +78,7 @@
       <li><a href="#rules">Правила</a></li>
       <li><a href="#donate">Донаты</a></li>
       <li><a href="#join">Как зайти</a></li>
+      <li><a href="#faq">FAQ</a></li>
       <li><a href="#contacts">Контакты</a></li>
     </ul>
     <a href="#join" class="nav-cta">Играть</a>
@@ -65,8 +87,12 @@
   <!-- Герой -->
   <header class="hero" id="top">
     <div class="hero-card">
+      <div class="server-status" id="serverStatus" role="status" aria-live="polite">
+        <span class="status-dot status-dot-loading"></span>
+        <span class="status-text">Проверяем статус сервера…</span>
+      </div>
       <div class="hero-pretitle">
-        <span class="heart-pulse"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f497.svg" alt="growing heart" class="twemoji" aria-hidden="true"></span>
+        <span class="heart-pulse"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f497.svg" alt="" class="twemoji" aria-hidden="true"></span>
         уютный Minecraft SMP
       </div>
       <h1 class="hero-title">
@@ -79,7 +105,7 @@
       </p>
       <div class="hero-actions">
         <a href="#join" class="btn btn-primary">Как зайти</a>
-        <a href="https://t.me/opal_land" target="_blank" class="btn btn-ghost">Telegram</a>
+        <a href="https://t.me/opal_land" target="_blank" class="btn btn-ghost" rel="noopener">Telegram</a>
       </div>
       <div class="server-ip-card">
         <div class="ip-info">
@@ -87,7 +113,7 @@
           <span class="ip-value" id="ipValue">opal.cubzx.xyz</span>
         </div>
         <button class="copy-btn" id="copyIp" data-ip="opal.cubzx.xyz" type="button">
-          <span class="copy-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4cb.svg" alt="clipboard" class="twemoji" aria-hidden="true"></span>
+          <span class="copy-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4cb.svg" alt="" class="twemoji" aria-hidden="true"></span>
           <span class="copy-text">Копировать</span>
         </button>
       </div>
@@ -104,11 +130,15 @@
       <span>донат-привилегии</span>
       <span>без экономики</span>
       <span>голосовой чат</span>
-      <span>уязые вайпы</span>
+      <span>уютные вайпы</span>
       <span>Java 1.21.11</span>
       <span>чистый SMP</span>
       <span>милое сообщество</span>
       <span>анти-чит</span>
+      <span>донат-привилегии</span>
+      <span>без экономики</span>
+      <span>голосовой чат</span>
+      <span>уютные вайпы</span>
     </div>
   </div>
 
@@ -126,7 +156,7 @@
 
       <div class="features">
         <div class="feature-card reveal">
-          <div class="feature-icon" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f338.svg" alt="cherry blossom" class="twemoji" aria-hidden="true"></div>
+          <div class="feature-icon" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f338.svg" alt="" class="twemoji" aria-hidden="true"></div>
           <h3 class="feature-title">Чистый SMP</h3>
           <p class="feature-text">
             Никакой экономики и донат-валют. Все ресурсы получены честно,
@@ -136,46 +166,46 @@
         </div>
 
         <div class="feature-card reveal">
-          <div class="feature-icon" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f6e1.svg" alt="shield" class="twemoji" aria-hidden="true"></div>
+          <div class="feature-icon" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f6e1.svg" alt="" class="twemoji" aria-hidden="true"></div>
           <h3 class="feature-title">Сборка античитов</h3>
           <p class="feature-text">
-            Наш античит настроен так жёстко, что ловит даже самые беспалевные читы 
+            Наш античит настроен так жёстко, что ловит даже самые незаметные читы
             с максимальным легит-режимом. Играй честно и спи спокойно.
           </p>
         </div>
 
         <div class="feature-card reveal">
-          <div class="feature-icon" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f399.svg" alt="microphone" class="twemoji" aria-hidden="true"></div>
+          <div class="feature-icon" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f399.svg" alt="" class="twemoji" aria-hidden="true"></div>
           <h3 class="feature-title">Simple Voice Chat</h3>
           <p class="feature-text">
-            Голосовое общение прямо в игре. Обсуждай планы, шути во время копания 
+            Голосовое общение прямо в игре. Обсуждай планы, шути во время копания
             или просто болтай с соседями в голос — всё это делает игру уютнее.
           </p>
         </div>
 
         <div class="feature-card reveal">
-          <div class="feature-icon" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f33f.svg" alt="herb" class="twemoji" aria-hidden="true"></div>
+          <div class="feature-icon" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f33f.svg" alt="" class="twemoji" aria-hidden="true"></div>
           <h3 class="feature-title">Предзагруженный мир</h3>
           <p class="feature-text">
-            Мир прогружен заранее, поэтому исследование не вызывает лагов, 
+            Мир прогружен заранее, поэтому исследование не вызывает лагов,
             а пинг остаётся комфортным даже в напряжённых моментах.
           </p>
         </div>
 
         <div class="feature-card reveal">
-          <div class="feature-icon" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f3e0.svg" alt="house" class="twemoji" aria-hidden="true"></div>
+          <div class="feature-icon" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f3e0.svg" alt="" class="twemoji" aria-hidden="true"></div>
           <h3 class="feature-title">Уютная атмосфера</h3>
           <p class="feature-text">
-            Мы ценим вежливость и помощь новичкам. На сервере не кричат, 
+            Мы ценим вежливость и помощь новичкам. На сервере не кричат,
             не гриферят ради токсика и не мешают другим строить.
           </p>
         </div>
 
         <div class="feature-card reveal">
-          <div class="feature-icon" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f5fa.svg" alt="map" class="twemoji" aria-hidden="true"></div>
-          <h3 class="feature-title">Защита кординат</h3>
+          <div class="feature-icon" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f5fa.svg" alt="" class="twemoji" aria-hidden="true"></div>
+          <h3 class="feature-title">Защита координат</h3>
           <p class="feature-text">
-            При логине ты появляешься на спавне, а только потом возвращаешься 
+            При логине ты появляешься на спавне, а только потом возвращаешься
             в точку выхода. Твоя база в безопасности.
           </p>
         </div>
@@ -191,9 +221,9 @@
           <span class="section-tag">почему мы</span>
           <h2 class="section-title big-title">Доброе комьюнити</h2>
           <p class="section-subtitle big-subtitle">
-            Opal Land — это не просто сервер, а маленькое дружное сообщество. 
-            Здесь помогают новичкам, делятся ресурсами, вместе строят города 
-            и весело проводят время. Админ всегда на связи и прислушивается к мнению игроков, 
+            Opal Land — это не просто сервер, а маленькое дружное сообщество.
+            Здесь помогают новичкам, делятся ресурсами, вместе строят города
+            и весело проводят время. Админ всегда на связи и прислушивается к мнению игроков,
             поэтому каждый может повлиять на будущее сервера.
           </p>
           <div class="stat-row">
@@ -212,7 +242,64 @@
           </div>
         </div>
         <div class="big-card-art card-image" aria-hidden="true">
-          <img src="assets/how-to-join.png" alt="Как зайти на сервер Opal Land" loading="lazy">
+          <svg viewBox="0 0 352 320" xmlns="http://www.w3.org/2000/svg" class="pixel-scene-svg" role="img" aria-label="Пиксельный пейзаж Opal Land">
+            <defs>
+              <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#171021"/>
+                <stop offset="1" stop-color="#2a1c33"/>
+              </linearGradient>
+            </defs>
+            <!-- sky -->
+            <rect x="0" y="0" width="352" height="320" fill="url(#sky)"/>
+            <!-- stars -->
+            <g fill="#cdd3ec">
+              <rect x="24" y="20" width="2" height="2"/><rect x="80" y="48" width="2" height="2"/>
+              <rect x="140" y="16" width="2" height="2"/><rect x="200" y="40" width="2" height="2"/>
+              <rect x="60" y="90" width="2" height="2"/><rect x="120" y="70" width="2" height="2"/>
+              <rect x="30" y="130" width="2" height="2"/><rect x="180" y="100" width="2" height="2"/>
+              <rect x="260" y="30" width="2" height="2"/><rect x="300" y="80" width="2" height="2"/>
+              <rect x="330" y="40" width="2" height="2"/>
+            </g>
+            <!-- moon with ring -->
+            <circle cx="284" cy="52" r="26" fill="#c87896" opacity=".35"/>
+            <circle cx="284" cy="52" r="18" fill="#ffc0d4"/>
+            <circle cx="278" cy="46" r="3" fill="#f0a4be"/>
+            <circle cx="289" cy="57" r="2.5" fill="#f0a4be"/>
+            <!-- clouds -->
+            <g fill="#3b2a44">
+              <rect x="40" y="140" width="44" height="10"/><rect x="52" y="132" width="24" height="8"/>
+              <rect x="220" y="110" width="36" height="8"/><rect x="230" y="103" width="18" height="7"/>
+            </g>
+            <!-- hills -->
+            <path d="M0 190 Q 80 160 160 185 T 352 175 L 352 320 L 0 320 Z" fill="#324030"/>
+            <path d="M0 225 Q 90 200 180 220 T 352 215 L 352 320 L 0 320 Z" fill="#486636"/>
+            <path d="M0 262 Q 100 240 200 258 T 352 255 L 352 320 L 0 320 Z" fill="#608442"/>
+            <!-- cherry tree left -->
+            <g>
+              <rect x="60" y="230" width="8" height="34" fill="#5c3e34"/>
+              <rect x="48" y="196" width="34" height="14" fill="#ffacbe"/>
+              <rect x="54" y="188" width="22" height="10" fill="#ffb8c8"/>
+              <rect x="44" y="208" width="44" height="12" fill="#fa94ac"/>
+            </g>
+            <!-- cherry tree right -->
+            <g>
+              <rect x="270" y="252" width="8" height="28" fill="#5c3e34"/>
+              <rect x="258" y="222" width="32" height="13" fill="#ffacbe"/>
+              <rect x="264" y="214" width="20" height="10" fill="#ffb8c8"/>
+            </g>
+            <!-- flowers -->
+            <g>
+              <rect x="110" y="282" width="3" height="3" fill="#ffb7c5"/><rect x="113" y="285" width="3" height="3" fill="#fff"/>
+              <rect x="160" y="292" width="3" height="3" fill="#ffb7c5"/><rect x="163" y="295" width="3" height="3" fill="#fff"/>
+              <rect x="220" y="288" width="3" height="3" fill="#ffb7c5"/><rect x="223" y="291" width="3" height="3" fill="#fff"/>
+              <rect x="310" y="280" width="3" height="3" fill="#ffb7c5"/><rect x="313" y="283" width="3" height="3" fill="#fff"/>
+            </g>
+            <!-- fireflies -->
+            <g fill="#b7f0d4">
+              <rect x="130" y="250" width="3" height="3"/><rect x="240" y="262" width="3" height="3"/>
+              <rect x="190" y="240" width="3" height="3"/>
+            </g>
+          </svg>
         </div>
       </div>
     </div>
@@ -276,25 +363,25 @@
         <div class="steps">
           <div class="step reveal">
             <div class="step-number">1</div>
-            <div class="step-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/2b07.svg" alt="download" class="twemoji" aria-hidden="true"></div>
+            <div class="step-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/2b07.svg" alt="" class="twemoji" aria-hidden="true"></div>
             <h3>Установи Minecraft</h3>
             <p>Java Edition версия <strong>1.21.11</strong>. С 1.21+ тоже работает, но все фичи доступны на 1.21.11.</p>
           </div>
           <div class="step reveal">
             <div class="step-number">2</div>
-            <div class="step-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f399.svg" alt="microphone" class="twemoji" aria-hidden="true"></div>
+            <div class="step-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f399.svg" alt="" class="twemoji" aria-hidden="true"></div>
             <h3>Simple Voice Chat</h3>
             <p>Добавь мод <strong>Simple Voice Chat</strong> для голосового общения в игре. Без мода сервер тоже работает.</p>
           </div>
           <div class="step reveal">
             <div class="step-number">3</div>
-            <div class="step-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4cb.svg" alt="clipboard" class="twemoji" aria-hidden="true"></div>
+            <div class="step-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4cb.svg" alt="" class="twemoji" aria-hidden="true"></div>
             <h3>Добавь адрес</h3>
             <p>В мультиплеере добавь сервер с адресом <strong class="ip-highlight">opal.cubzx.xyz</strong>.</p>
           </div>
           <div class="step reveal">
             <div class="step-number">4</div>
-            <div class="step-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/2728.svg" alt="sparkles" class="twemoji" aria-hidden="true"></div>
+            <div class="step-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/2728.svg" alt="" class="twemoji" aria-hidden="true"></div>
             <h3>Играй!</h3>
             <p>Заходи на сервер, появляйся на спавне и отправляйся в свою точку. Добро пожаловать!</p>
           </div>
@@ -303,12 +390,12 @@
 
       <div class="join-card reveal">
         <div class="join-card-left">
-          <span class="join-badge"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f3ae.svg" alt="gamepad" class="twemoji" aria-hidden="true"> IP сервера</span>
+          <span class="join-badge"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f3ae.svg" alt="" class="twemoji" aria-hidden="true"> IP сервера</span>
           <div class="join-ip">opal.cubzx.xyz</div>
           <p class="join-meta">Java Edition · версия 1.21+ · рекомендуемая 1.21.11</p>
         </div>
         <button class="copy-btn copy-btn-big" id="copyIpBig" data-ip="opal.cubzx.xyz" type="button">
-          <span class="copy-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4cb.svg" alt="clipboard" class="twemoji" aria-hidden="true"></span>
+          <span class="copy-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4cb.svg" alt="" class="twemoji" aria-hidden="true"></span>
           <span class="copy-text">Копировать IP</span>
         </button>
       </div>
@@ -346,14 +433,14 @@
             <li><code>/crawl</code> — ползти на четвереньках</li>
           </ul>
           <div class="donate-includes sponsor-perk">
-            <span><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/26a1.svg" alt="high voltage" class="twemoji" aria-hidden="true"> Ускоренная поддержка — приоритетный ответ администрации</span>
+            <span><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/26a1.svg" alt="" class="twemoji" aria-hidden="true"> Ускоренная поддержка — приоритетный ответ администрации</span>
           </div>
         </div>
       </div>
 
       <div class="donate-purchase reveal">
         <div class="purchase-body">
-          <span class="purchase-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4ac.svg" alt="speech balloon" class="twemoji" aria-hidden="true"></span>
+          <span class="purchase-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4ac.svg" alt="" class="twemoji" aria-hidden="true"></span>
           <div>
             <h3>Как купить?</h3>
             <p>Для покупки любой привилегии или услуги пиши администратору <strong>@Phant0mNight</strong> в Telegram.</p>
@@ -370,13 +457,13 @@
 
       <div class="services-grid">
         <div class="service-card reveal">
-          <div class="service-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f3f7.svg" alt="label" class="twemoji" aria-hidden="true"></div>
+          <div class="service-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f3f7.svg" alt="" class="twemoji" aria-hidden="true"></div>
           <h3 class="service-name">Готовый титул</h3>
-          <p class="service-desc">Выбери один из титулов: <span class="title-example">"67"</span>, <span class="title-example">"+rep"</span> или <span class="title-example">"еблан"</span>.</p>
+          <p class="service-desc">Выбери один из готовых титулов: <span class="title-example">"67"</span>, <span class="title-example">"+rep"</span> или <span class="title-example">"грифер"</span>.</p>
           <div class="service-price">49 ₽ <span>за титул</span></div>
         </div>
         <div class="service-card reveal">
-          <div class="service-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/270d.svg" alt="writing hand" class="twemoji" aria-hidden="true"></div>
+          <div class="service-icon"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/270d.svg" alt="" class="twemoji" aria-hidden="true"></div>
           <h3 class="service-name">Свой титул</h3>
           <p class="service-desc">Придумай свой уникальный титул. Модерация оставляет право отказать в неподобающем тексте.</p>
           <div class="service-price">199 ₽ <span>за титул</span></div>
@@ -384,11 +471,85 @@
       </div>
 
       <div class="donate-notice fanpay-notice reveal">
-        <p><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f512.svg" alt="locked" class="twemoji" aria-hidden="true"> Все донаты оформляются и покупаются через <strong><a href="https://funpay.com/users/17411240/" target="_blank" rel="noopener">Funpay</a></strong> в целях безопасности.</p>
+        <p><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f512.svg" alt="" class="twemoji" aria-hidden="true"> Все донаты оформляются и покупаются через <strong><a href="https://funpay.com/users/17411240/" target="_blank" rel="noopener">Funpay</a></strong> в целях безопасности.</p>
       </div>
 
       <div class="donate-notice reveal">
-        <p><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/26a0.svg" alt="warning" class="twemoji" aria-hidden="true"> Во время PvP все команды привилегий отключены, чтобы free-to-play игрокам не было слишком тяжело.</p>
+        <p><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/26a0.svg" alt="" class="twemoji" aria-hidden="true"> Во время PvP все команды привилегий отключены, чтобы free-to-play игрокам не было слишком тяжело.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section section-faq" id="faq">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">вопросы и ответы</span>
+        <h2 class="section-title">Частые вопросы</h2>
+        <p class="section-subtitle">Не нашёл ответ? Пиши администратору или в Telegram-канал.</p>
+      </div>
+
+      <div class="faq-list">
+        <details class="faq-item reveal">
+          <summary>
+            <span>Какая версия Minecraft нужна?</span>
+            <span class="faq-arrow" aria-hidden="true">→</span>
+          </summary>
+          <div class="faq-body">
+            <p>Java Edition 1.21.11 — рекомендуемая. Сервер также работает на 1.21+,
+            но все фичи гарантированно доступны именно на 1.21.11.</p>
+          </div>
+        </details>
+        <details class="faq-item reveal">
+          <summary>
+            <span>Обязателен ли мод Simple Voice Chat?</span>
+            <span class="faq-arrow" aria-hidden="true">→</span>
+          </summary>
+          <div class="faq-body">
+            <p>Нет, без мода сервер отлично работает. Но с ним можно общаться голосом прямо в игре —
+            это заметно уютнее.</p>
+          </div>
+        </details>
+        <details class="faq-item reveal">
+          <summary>
+            <span>Есть ли экономика или донат-валюта?</span>
+            <span class="faq-arrow" aria-hidden="true">→</span>
+          </summary>
+          <div class="faq-body">
+            <p>Нет. Opal Land — чистый SMP: никакой виртуальной экономики, магазинов за реальные деньги
+            или платных преимуществ в PvP. Всё честно.</p>
+          </div>
+        </details>
+        <details class="faq-item reveal">
+          <summary>
+            <span>Что даёт привилегия «Спонсор»?</span>
+            <span class="faq-arrow" aria-hidden="true">→</span>
+          </summary>
+          <div class="faq-body">
+            <p>Удобные бытовые команды (/hat, /weather, /crawl и другие) и приоритетная поддержка.
+            Во время PvP все команды привилегий отключаются, чтобы сохранять честную игру.</p>
+          </div>
+        </details>
+        <details class="faq-item reveal">
+          <summary>
+            <span>Как часто бывают вайпы?</span>
+            <span class="faq-arrow" aria-hidden="true">→</span>
+          </summary>
+          <div class="faq-body">
+            <p>Вайпы редкие и уютные — только когда мир действительно исчерпал себя.
+            Даты всегда анонсируются заранее в Telegram-канале.</p>
+          </div>
+        </details>
+        <details class="faq-item reveal">
+          <summary>
+            <span>Меня обидели / зарейдили базу. Что делать?</span>
+            <span class="faq-arrow" aria-hidden="true">→</span>
+          </summary>
+          <div class="faq-body">
+            <p>Пиши администратору <a href="https://t.me/Phant0mNight" target="_blank" rel="noopener">@Phant0mNight</a> в Telegram —
+            приложи скриншоты или видео, разберёмся. Читеров и гриферов банит античит и администрация.</p>
+          </div>
+        </details>
       </div>
     </div>
   </section>
@@ -404,7 +565,7 @@
 
       <div class="contacts">
         <a href="https://t.me/opal_land" target="_blank" class="contact-card reveal" rel="noopener">
-          <span class="contact-emoji"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/2708.svg" alt="airplane" class="twemoji" aria-hidden="true"></span>
+          <span class="contact-emoji"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/2708.svg" alt="" class="twemoji" aria-hidden="true"></span>
           <div class="contact-body">
             <h3>Telegram-канал</h3>
             <p>Новости, вайпы и обновления</p>
@@ -412,7 +573,7 @@
           <span class="contact-arrow">→</span>
         </a>
         <a href="https://discord.gg/sgVRyRgncg" target="_blank" class="contact-card reveal" rel="noopener">
-          <span class="contact-emoji"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4ac.svg" alt="speech balloon" class="twemoji" aria-hidden="true"></span>
+          <span class="contact-emoji"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4ac.svg" alt="" class="twemoji" aria-hidden="true"></span>
           <div class="contact-body">
             <h3>Discord-сервер</h3>
             <p>Голосовые лобби и общение</p>
@@ -420,7 +581,7 @@
           <span class="contact-arrow">→</span>
         </a>
         <a href="https://t.me/Phant0mNight" target="_blank" class="contact-card reveal" rel="noopener">
-          <span class="contact-emoji"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f451.svg" alt="crown" class="twemoji" aria-hidden="true"></span>
+          <span class="contact-emoji"><img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f451.svg" alt="" class="twemoji" aria-hidden="true"></span>
           <div class="contact-body">
             <h3>Администратор</h3>
             <p>Вопросы и предложения</p>
@@ -430,7 +591,7 @@
       </div>
 
       <div class="contact-footer reveal">
-        <p>Мы всегда рады новым друзьям и хорошим идеям <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f497.svg" alt="growing heart" class="twemoji" aria-hidden="true"></p>
+        <p>Мы всегда рады новым друзьям и хорошим идеям <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f497.svg" alt="" class="twemoji" aria-hidden="true"></p>
       </div>
     </div>
   </section>
@@ -439,7 +600,7 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-logo">
-        <img src="assets/avatar.jpg?v=2" alt="" class="footer-avatar" width="24" height="24" aria-hidden="true">
+        <img src="assets/opal-gem.png" alt="" class="footer-avatar" width="24" height="24" aria-hidden="true">
         <span>Opal Land</span>
       </div>
       <p class="footer-desc">Уютный Minecraft SMP. Java 1.21.11. Чистое выживание без экономики.</p>
