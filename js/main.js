@@ -66,7 +66,7 @@
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 15000);
     try {
-      const res = await fetch('https://api.mcsrvstat.us/3/opal.cubzx.xyz', {
+      const res = await fetch('https://api.mcsrvstat.us/3/opalland.20tps.ru', {
         signal: controller.signal
       });
       if (!res.ok) throw new Error('status api error');
@@ -85,7 +85,7 @@
 
     const fail = () => {
       dot.classList.remove('status-dot-loading');
-      text.textContent = 'opal.cubzx.xyz · Java 1.21+';
+      text.textContent = 'opalland.20tps.ru · Java 1.21+';
     };
 
     let data = null;
@@ -166,31 +166,22 @@
     });
   })();
 
-  /* ---------- scroll reveal (clears stagger delay after reveal
-     so hover transitions are not delayed) ---------- */
+  /* ---------- scroll reveal ----------
+     Uses CSS animation, not transition, so reveal never
+     overrides the hover transitions declared on cards. */
   const revealEls = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const el = entry.target;
-          el.classList.add('in');
-          // Remove stagger delay after the reveal transition finishes
-          // so it doesn't delay hover effects
-          const delay = el.style.transitionDelay;
-          if (delay) {
-            el.addEventListener('transitionend', function handler() {
-              el.style.transitionDelay = '';
-              el.removeEventListener('transitionend', handler);
-            }, { once: true });
-          }
-          revealObserver.unobserve(el);
+          entry.target.classList.add('in');
+          revealObserver.unobserve(entry.target);
         }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
     revealEls.forEach(el => revealObserver.observe(el));
   } else {
-    revealEls.forEach(el => { el.classList.add('in'); el.style.transitionDelay = ''; });
+    revealEls.forEach(el => el.classList.add('in'));
   }
 
   /* ---------- staggered reveal for grids ---------- */
@@ -198,7 +189,7 @@
     .forEach(sel => {
       document.querySelectorAll(sel).forEach(grid => {
         Array.from(grid.children).forEach((child, i) => {
-          child.style.transitionDelay = Math.min(i * 70, 420) + 'ms';
+          child.style.setProperty('--reveal-delay', Math.min(i * 70, 420) + 'ms');
         });
       });
     });
@@ -426,7 +417,11 @@
         this.x += Math.sin(this.angle) * this.sway;
         this.rotation += this.rotationSpeed;
         this.twinkle += this.twinkleSpeed;
+        // Recycle once off-screen, and keep everything inside the
+        // current viewport after a resize
         if (this.y > height + 30) this.reset(false);
+        if (this.x < -40) this.x = width + 20;
+        else if (this.x > width + 40) this.x = -20;
       }
       draw() {
         const flicker = 0.85 + 0.15 * Math.sin(this.twinkle);
@@ -441,7 +436,10 @@
       }
     }
 
-    const count = coarsePointer ? 14 : 22;
+    // Scale particle count with viewport area so small screens
+    // don't get crowded and idle phones stay cool
+    const area = window.innerWidth * window.innerHeight;
+    const count = Math.min(coarsePointer ? 12 : 22, Math.max(7, Math.round(area / 48000)));
     const particles = Array.from({ length: count }, () => new Particle());
 
     let rafId = null;

@@ -91,14 +91,14 @@
 }
 
 /* ---------- Feature / step / contact icons float ---------- */
-.feature-icon .twemoji,
-.step-icon .twemoji,
-.service-icon .twemoji,
-.contact-emoji .twemoji{
+.feature-icon .emoji,
+.step-icon .emoji,
+.service-icon .emoji,
+.contact-emoji .emoji{
   transition:transform .4s var(--ease);
 }
-.feature-card:hover .twemoji,
-.service-card:hover .twemoji{
+.feature-card:hover .emoji,
+.service-card:hover .emoji{
   animation:iconBob .9s ease-in-out infinite;
 }
 @keyframes iconBob{
@@ -201,17 +201,19 @@
   .hero-pretitle::after,
   .join-badge::after,
   .donate-badge::after,
-  .donate-card-featured,
-  .sponsor-perk,
+  .donate-card-featured::after,
+  .sponsor-perk::after,
   .scroll-top.visible::before,
   .faq-item[open] .faq-body,
   .server-status .status-text,
   .sky-layer::after,
-  .feature-card:hover .twemoji,
-  .service-card:hover .twemoji{
+  .feature-card:hover .emoji,
+  .service-card:hover .emoji{
     animation:none !important;
   }
   .marquee-track{animation:none}
-  .reveal{opacity:1;transform:none}
+  .reveal{opacity:1}
+  .reveal.in{animation:none}
   .scroll-progress{transition:none}
+  html{scroll-behavior:auto}
 }

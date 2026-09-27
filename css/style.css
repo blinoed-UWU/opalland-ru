@@ -58,6 +58,9 @@ body{
 a{color:inherit;text-decoration:none}
 ::selection{background:rgba(255,183,197,.35);color:#fff}
 
+/* Keep anchored sections clear of the fixed nav */
+section[id],header[id],footer[id]{scroll-margin-top:96px}
+
 /* ============================================================
    BACKGROUND SCENE
    ============================================================ */
@@ -81,12 +84,7 @@ a{color:inherit;text-decoration:none}
   pointer-events:none;
 }
 
-.sun,.cloud,.stars{display:none}
 /* Real Minecraft cherry-blossom wallpaper is used as background */
-
-.ground-layer{display:none}
-
-/* keep scene elements hidden since we use real MC wallpaper */
 
 .particle-canvas{
   position:fixed;
@@ -635,14 +633,14 @@ a{color:inherit;text-decoration:none}
 .big-card:hover .big-card-art img{transform:scale(1.03) rotate(-.6deg)}
 .art-block, .art-sheep, .art-flower{display:none}
 
-/* fallback if no image */
+/* fallback if image fails to load */
 .big-card-art:empty::before{
-  content:"";
+  content:"🐑";
   display:block;
-  width:60px;
-  height:60px;
+  font-size:60px;
+  line-height:1;
+  text-align:center;
   margin:0 auto;
-  background:url('https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f411.svg') no-repeat center/contain;
   opacity:.5;
 }
 
@@ -967,12 +965,6 @@ a{color:inherit;text-decoration:none}
    DONATE
    ============================================================ */
 .section-donate{background:linear-gradient(180deg, rgba(255,183,197,.04) 0%, transparent 100%)}
-.donate-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:20px;
-  align-items:stretch;
-}
 .donate-single{
   display:flex;
   justify-content:center;
@@ -1131,22 +1123,21 @@ a{color:inherit;text-decoration:none}
   border-color:rgba(183,240,212,.30);
 }
 
-.twemoji{
-  width:1em;
-  height:1em;
+/* Native emoji icons — zero external requests, never fail to load */
+.emoji{
   display:inline-block;
+  font-style:normal;
+  line-height:1;
   vertical-align:middle;
   margin-top:-0.1em;
+  font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",
+              "EmojiOne Color","Android Emoji",sans-serif;
 }
-.feature-icon .twemoji,
-.step-icon .twemoji,
-.service-icon .twemoji,
-.purchase-icon .twemoji,
-.contact-emoji .twemoji{
-  width:60%;
-  height:60%;
-  object-fit:contain;
-}
+.feature-icon .emoji{font-size:26px}
+.step-icon .emoji{font-size:30px}
+.service-icon .emoji,
+.purchase-icon .emoji{font-size:26px}
+.contact-emoji .emoji{font-size:28px}
 
 .donate-purchase{
   display:flex;
@@ -1427,22 +1418,28 @@ a{color:inherit;text-decoration:none}
 
 /* ============================================================
    REVEAL
+   Uses animation (not transition) so it never overrides the
+   hover transitions declared on cards.
    ============================================================ */
 .reveal{
   opacity:0;
-  transform:translateY(30px);
-  transition:opacity .8s var(--ease-slow), transform .8s var(--ease-slow);
+  will-change:opacity, transform;
 }
 .reveal.in{
-  opacity:1;
-  transform:none;
+  animation:revealUp .8s var(--ease-slow) both;
+  animation-delay:var(--reveal-delay, 0ms);
+  will-change:auto;
+}
+@keyframes revealUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:none}
 }
 
 /* ============================================================
    RESPONSIVE
    ============================================================ */
 @media(max-width:1024px){
-  .features,.rules-grid,.contacts,.donate-grid,.services-grid{grid-template-columns:repeat(2,1fr)}
+  .features,.rules-grid,.contacts,.services-grid{grid-template-columns:repeat(2,1fr)}
   .steps{grid-template-columns:repeat(2,1fr)}
   .big-card{grid-template-columns:1fr}
   .donate-single .donate-card{max-width:480px}
@@ -1474,7 +1471,7 @@ a{color:inherit;text-decoration:none}
   }
   .nav-links a{text-align:center;padding:12px 16px}
   .nav-cta{margin-left:auto;margin-right:52px}
-  .features,.rules-grid,.contacts,.steps,.donate-grid,.services-grid{grid-template-columns:1fr}
+  .features,.rules-grid,.contacts,.steps,.services-grid{grid-template-columns:1fr}
   .hero{padding:110px 16px 70px}
   .hero-card{padding:32px 22px}
   .section{padding:70px 16px}
@@ -1490,7 +1487,9 @@ a{color:inherit;text-decoration:none}
 }
 
 @media(prefers-reduced-motion:reduce){
-  .cloud,.sun,.marquee-track,.flower,.art-block,.art-sheep{animation:none}
-  .reveal{opacity:1;transform:none}
+  .marquee-track{animation:none}
+  .reveal{opacity:1}
+  .reveal.in{animation:none}
   .scroll-progress{transition:none}
+  html{scroll-behavior:auto}
 }
