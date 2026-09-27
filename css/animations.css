@@ -1,10 +1,9 @@
 /* ============================================================
    OPAL LAND — extra animations (soft & bouncy)
+   All motion is GPU-friendly and respects prefers-reduced-motion.
    ============================================================ */
 
-/* Floating particles canvas is handled in JS; these are keyframes */
-
-/* Hero card entrance */
+/* ---------- Hero card entrance ---------- */
 .hero-card{
   animation:cardIn 1s var(--ease-slow) both;
 }
@@ -13,7 +12,7 @@
   to{opacity:1;transform:none}
 }
 
-/* Title letters stagger */
+/* ---------- Title letters stagger ---------- */
 .title-line{animation:titleDrop .9s var(--ease) both}
 .title-line-2{animation:titleDrop .9s var(--ease) .12s both}
 @keyframes titleDrop{
@@ -21,7 +20,7 @@
   to{opacity:1;transform:none}
 }
 
-/* Soft heartbeat for decorative emojis */
+/* ---------- Soft heartbeat for decorative emojis ---------- */
 .bounce-soft{
   display:inline-block;
   animation:bounceSoft 2.8s ease-in-out infinite;
@@ -31,17 +30,170 @@
   50%{transform:translateY(-5px)}
 }
 
-/* Link hover underline grow */
+/* ---------- Nav link hover underline ---------- */
 .nav-links a{position:relative}
 .nav-links a::after{
   content:"";
   position:absolute;
   bottom:6px;
-  left:14px;
+  left:50%;
   width:0;
   height:2px;
   background:linear-gradient(90deg,var(--pink),var(--lavender));
   border-radius:2px;
+  transform:translateX(-50%);
   transition:width .3s var(--ease-slow);
 }
-.nav-links a:hover::after{width:calc(100% - 28px)}
+.nav-links a:hover::after,
+.nav-links a.active::after{width:calc(100% - 28px)}
+
+/* ---------- Brand avatar gentle bob + glow ---------- */
+.brand-avatar{
+  animation:brandFloat 4s ease-in-out infinite;
+}
+@keyframes brandFloat{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-2px) rotate(-2deg)}
+}
+.nav-brand:hover .brand-avatar{
+  animation:none;
+  transform:scale(1.12) rotate(6deg);
+  transition:transform .35s var(--ease);
+}
+
+/* ---------- Section tag shimmer sweep ---------- */
+.section-tag,
+.hero-pretitle,
+.join-badge,
+.donate-badge{
+  position:relative;
+  overflow:hidden;
+}
+.section-tag::after,
+.hero-pretitle::after,
+.join-badge::after,
+.donate-badge::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-120%;
+  width:60%;
+  height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.7),transparent);
+  transform:skewX(-18deg);
+  animation:shineSweep 4.5s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes shineSweep{
+  0%,70%{left:-120%}
+  85%{left:130%}
+  100%{left:130%}
+}
+
+/* ---------- Feature / step / contact icons float ---------- */
+.feature-icon .twemoji,
+.step-icon .twemoji,
+.service-icon .twemoji,
+.contact-emoji .twemoji{
+  transition:transform .4s var(--ease);
+}
+.feature-card:hover .twemoji,
+.service-card:hover .twemoji{
+  animation:iconBob .9s ease-in-out infinite;
+}
+@keyframes iconBob{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-4px) rotate(5deg)}
+}
+
+/* ---------- Donate featured: slow aurora shimmer ---------- */
+.donate-card-featured{
+  background-size:200% 200%;
+  animation:auroraShift 9s ease-in-out infinite;
+}
+@keyframes auroraShift{
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
+
+/* ---------- Sponsor perk: subtle pulse ---------- */
+.sponsor-perk{
+  animation:perkGlow 3.2s ease-in-out infinite;
+}
+@keyframes perkGlow{
+  0%,100%{box-shadow:0 0 0 rgba(183,240,212,0)}
+  50%{box-shadow:0 0 18px -4px rgba(183,240,212,.45)}
+}
+
+/* ---------- Scroll-top button pulse ring ---------- */
+.scroll-top.visible::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  border:2px solid rgba(255,183,197,.6);
+  animation:ringPulse 2.4s ease-out infinite;
+  pointer-events:none;
+}
+@keyframes ringPulse{
+  0%{transform:scale(1);opacity:.7}
+  100%{transform:scale(1.5);opacity:0}
+}
+
+/* ---------- FAQ answer reveal ---------- */
+.faq-item[open] .faq-body{
+  animation:faqOpen .4s var(--ease-slow) both;
+}
+@keyframes faqOpen{
+  from{opacity:0;transform:translateY(-8px)}
+  to{opacity:1;transform:none}
+}
+
+/* ---------- Marquee (kept smooth, pauses on hover) ---------- */
+.marquee:hover .marquee-track{animation-play-state:paused}
+
+/* ---------- Server status fade-in ---------- */
+.server-status[data-ready="true"] .status-text{
+  animation:statusIn .5s var(--ease-slow) both;
+}
+@keyframes statusIn{
+  from{opacity:0;transform:translateY(-3px)}
+  to{opacity:1;transform:none}
+}
+
+/* ---------- Soft twinkle for background stars ---------- */
+.sky-layer::after{
+  animation:skyGlow 12s ease-in-out infinite;
+}
+@keyframes skyGlow{
+  0%,100%{opacity:1}
+  50%{opacity:.82}
+}
+
+/* ============================================================
+   REDUCED MOTION — disable everything decorative
+   ============================================================ */
+@media(prefers-reduced-motion:reduce){
+  .hero-card,
+  .title-line,
+  .title-line-2,
+  .bounce-soft,
+  .brand-avatar,
+  .section-tag::after,
+  .hero-pretitle::after,
+  .join-badge::after,
+  .donate-badge::after,
+  .donate-card-featured,
+  .sponsor-perk,
+  .scroll-top.visible::before,
+  .faq-item[open] .faq-body,
+  .server-status .status-text,
+  .sky-layer::after,
+  .feature-card:hover .twemoji,
+  .service-card:hover .twemoji{
+    animation:none !important;
+  }
+  .marquee-track{animation:none}
+  .reveal{opacity:1;transform:none}
+  .scroll-progress{transition:none}
+}

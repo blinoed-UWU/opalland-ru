@@ -29,7 +29,14 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://api.mcsrvstat.us" crossorigin />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=VT323&display=swap" rel="stylesheet" />
+
+  <!-- Critical asset preloads -->
+  <link rel="preload" as="image" href="assets/bg.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/avatar.jpg?v=3" />
+
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/animations.css" />
 
@@ -240,7 +247,7 @@
           </div>
         </div>
         <div class="big-card-art card-image" aria-hidden="true">
-          <img src="assets/how-to-join.png?v=3" alt="Мем про доброе комьюнити" loading="lazy">
+          <img src="assets/how-to-join.png?v=3" alt="Мем про доброе комьюнити" loading="lazy" decoding="async" width="352" height="136">
         </div>
       </div>
     </div>
@@ -561,6 +568,6 @@
     </svg>
   </button>
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js" defer></script>
 </body>
 </html>
