@@ -1,5 +1,5 @@
 /* ============================================================
-   OPAL LAND — main scripts (optimized)
+   OPAL LAND — main scripts (v3 — pixel particles, robust status)
    ============================================================ */
 (function () {
   'use strict';
@@ -10,7 +10,6 @@
 
   /* ----------------------------------------------------------
      Shared rAF-throttled scroll dispatcher
-     (one listener instead of four; work runs at most once/frame)
      ---------------------------------------------------------- */
   const scrollHandlers = [];
   const onScrollTick = () => {
@@ -53,12 +52,28 @@
     });
   });
 
-  /* ---------- live server status (mcsrvstat.us API) ---------- */
+  /* ---------- live server status (mcsrvstat.us API) ----------
+     Retries up to 3 times with 15s timeout each, because the API
+     has bot protection that can return false "offline" on first hit. */
   function plural(n, one, few, many) {
     const mod10 = n % 10, mod100 = n % 100;
     if (mod10 === 1 && mod100 !== 11) return one;
     if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
     return many;
+  }
+
+  async function fetchStatus() {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 15000);
+    try {
+      const res = await fetch('https://api.mcsrvstat.us/3/opal.cubzx.xyz', {
+        signal: controller.signal
+      });
+      if (!res.ok) throw new Error('status api error');
+      return await res.json();
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
   (async function initServerStatus() {
@@ -73,46 +88,45 @@
       text.textContent = 'opal.cubzx.xyz · Java 1.21+';
     };
 
-    // Abort if the API does not answer in time
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 8000);
-
-    try {
-      const res = await fetch('https://api.mcsrvstat.us/3/opal.cubzx.xyz', {
-        signal: controller.signal
-      });
-      if (!res.ok) throw new Error('status api error');
-      const data = await res.json();
-
-      if (data.online) {
-        el.classList.add('is-online');
-        dot.classList.remove('status-dot-loading');
-        dot.classList.add('status-dot-online');
-        const players = data.players ? data.players.online : 0;
-        text.textContent = '';
-        if (players > 0) {
-          text.append('Сервер онлайн — ');
-          const span = document.createElement('span');
-          span.className = 'status-players';
-          span.textContent = String(players);
-          text.append(span, ' ' + plural(players, 'игрок', 'игрока', 'игроков'));
-        } else {
-          text.textContent = 'Сервер онлайн';
+    let data = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        data = await fetchStatus();
+        break;
+      } catch (err) {
+        if (attempt < 2) {
+          // wait before retry: 1.5s, 3s
+          await new Promise(r => setTimeout(r, 1500 * (attempt + 1)));
         }
-      } else {
-        dot.classList.remove('status-dot-loading');
-        dot.classList.add('status-dot-offline');
-        text.textContent = 'Сервер сейчас offline';
       }
-    } catch (err) {
-      fail();
-    } finally {
-      clearTimeout(timer);
-      el.setAttribute('data-ready', 'true');
     }
+
+    if (!data) { fail(); el.setAttribute('data-ready', 'true'); return; }
+
+    if (data.online) {
+      el.classList.add('is-online');
+      dot.classList.remove('status-dot-loading');
+      dot.classList.add('status-dot-online');
+      const players = data.players ? data.players.online : 0;
+      text.textContent = '';
+      if (players > 0) {
+        text.append('Сервер онлайн — ');
+        const span = document.createElement('span');
+        span.className = 'status-players';
+        span.textContent = String(players);
+        text.append(span, ' ' + plural(players, 'игрок', 'игрока', 'игроков'));
+      } else {
+        text.textContent = 'Сервер онлайн';
+      }
+    } else {
+      dot.classList.remove('status-dot-loading');
+      dot.classList.add('status-dot-offline');
+      text.textContent = 'Сервер сейчас offline';
+    }
+    el.setAttribute('data-ready', 'true');
   })();
 
-  /* ---------- scroll progress bar ---------- */
+  /* ---------- scroll progress bar (GPU: scaleX, no layout) ---------- */
   const progressBar = document.getElementById('scrollProgress');
   if (progressBar) {
     let maxScroll = 1;
@@ -120,11 +134,11 @@
       maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     };
     onScroll(() => {
-      const pct = Math.min(100, (window.scrollY / maxScroll) * 100);
-      progressBar.style.width = pct + '%';
+      const pct = Math.min(1, window.scrollY / maxScroll);
+      progressBar.style.transform = `scaleX(${pct})`;
     });
     window.addEventListener('resize', () => { measure(); onScrollTick(); }, { passive: true });
-    document.fonts && document.fonts.ready.then(() => { measure(); onScrollTick(); });
+    if (document.fonts) document.fonts.ready.then(() => { measure(); onScrollTick(); });
     measure();
   }
 
@@ -152,20 +166,31 @@
     });
   })();
 
-  /* ---------- scroll reveal ---------- */
+  /* ---------- scroll reveal (clears stagger delay after reveal
+     so hover transitions are not delayed) ---------- */
   const revealEls = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-          revealObserver.unobserve(entry.target);
+          const el = entry.target;
+          el.classList.add('in');
+          // Remove stagger delay after the reveal transition finishes
+          // so it doesn't delay hover effects
+          const delay = el.style.transitionDelay;
+          if (delay) {
+            el.addEventListener('transitionend', function handler() {
+              el.style.transitionDelay = '';
+              el.removeEventListener('transitionend', handler);
+            }, { once: true });
+          }
+          revealObserver.unobserve(el);
         }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
     revealEls.forEach(el => revealObserver.observe(el));
   } else {
-    revealEls.forEach(el => el.classList.add('in'));
+    revealEls.forEach(el => { el.classList.add('in'); el.style.transitionDelay = ''; });
   }
 
   /* ---------- staggered reveal for grids ---------- */
@@ -252,11 +277,6 @@
     let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
     let rafId = null, active = true;
 
-    window.addEventListener('mousemove', (e) => {
-      targetX = (e.clientX / window.innerWidth - 0.5) * 2;
-      targetY = (e.clientY / window.innerHeight - 0.5) * 2;
-    }, { passive: true });
-
     function tick() {
       currentX += (targetX - currentX) * 0.05;
       currentY += (targetY - currentY) * 0.05;
@@ -268,7 +288,9 @@
       rafId = requestAnimationFrame(tick);
     }
 
-    window.addEventListener('mousemove', () => {
+    window.addEventListener('mousemove', (e) => {
+      targetX = (e.clientX / window.innerWidth - 0.5) * 2;
+      targetY = (e.clientY / window.innerHeight - 0.5) * 2;
       if (active && rafId === null) rafId = requestAnimationFrame(tick);
     }, { passive: true });
 
@@ -280,7 +302,8 @@
   })();
 
   /* ----------------------------------------------------------
-     Falling petals — drawn on canvas (no external images)
+     Pixel-art Minecraft particles — cherry petals, hearts, XP orbs
+     No external images. Canvas with image-rendering:pixelated.
      ---------------------------------------------------------- */
   (function initParticles() {
     const canvas = document.getElementById('particles');
@@ -299,97 +322,126 @@
       canvas.style.width = width + 'px';
       canvas.style.height = height + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // Snap to pixel grid for crisp pixel art
+      ctx.imageSmoothingEnabled = false;
     }
     resize();
     window.addEventListener('resize', resize, { passive: true });
 
-    const TYPES = ['petal', 'petal', 'heart', 'spark', 'leaf'];
-    const PALETTE = [
-      ['#ffd1dc', '#ffb7c5'],
-      ['#ffe3ec', '#ff9eb5'],
-      ['#ffffff', '#ffc8d8'],
-      ['#e3d4ff', '#c9a8ff'],
-      ['#d6f7e6', '#b7f0d4'],
+    const rand = (a, b) => a + Math.random() * (b - a);
+    const snap = (v, s) => Math.round(v / s) * s;
+
+    /* Pixel shape definitions (each is a small grid) */
+    // Cherry blossom petal — 5×5 diamond-ish
+    const PETAL = [
+      '..1..',
+      '.121.',
+      '12321',
+      '.121.',
+      '..1..',
+    ];
+    const PETAL_COLORS = { '1': '#ffb7c5', '2': '#ffd1dc', '3': '#fff0f5' };
+
+    // MC heart — 7×6
+    const HEART = [
+      '.11.11.',
+      '1221221',
+      '1222221',
+      '.12221.',
+      '..121..',
+      '...1...',
+    ];
+    const HEART_COLORS = { '1': '#ff6b8a', '2': '#ff9eb5' };
+
+    // XP orb — 5×5 glowing green
+    const ORB = [
+      '..1..',
+      '.121.',
+      '12321',
+      '.121.',
+      '..1..',
+    ];
+    const ORB_COLORS = { '1': '#4ade80', '2': '#86efac', '3': '#d1fae5' };
+
+    // Small pink block (like a dropped item)
+    const BLOCK = [
+      '111',
+      '121',
+      '111',
+    ];
+    const BLOCK_COLORS = { '1': '#ff9eb5', '2': '#ffd1dc' };
+
+    const SHAPES = [
+      { grid: PETAL, colors: PETAL_COLORS, weight: 40 },
+      { grid: HEART, colors: HEART_COLORS, weight: 15 },
+      { grid: ORB, colors: ORB_COLORS, weight: 25 },
+      { grid: BLOCK, colors: BLOCK_COLORS, weight: 20 },
     ];
 
-    const rand = (a, b) => a + Math.random() * (b - a);
+    function pickShape() {
+      const total = SHAPES.reduce((s, sh) => s + sh.weight, 0);
+      let r = Math.random() * total;
+      for (const sh of SHAPES) {
+        r -= sh.weight;
+        if (r <= 0) return sh;
+      }
+      return SHAPES[0];
+    }
+
+    function drawPixelGrid(grid, colors, px) {
+      const rows = grid.length;
+      const cols = grid[0].length;
+      const ox = -(cols * px) / 2;
+      const oy = -(rows * px) / 2;
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          const ch = grid[y][x];
+          if (ch === '.') continue;
+          ctx.fillStyle = colors[ch];
+          ctx.fillRect(ox + x * px, oy + y * px, px, px);
+        }
+      }
+    }
 
     class Particle {
       constructor() { this.reset(true); }
       reset(randomY) {
         this.x = Math.random() * width;
-        this.y = randomY ? Math.random() * height : rand(-60, -10);
-        this.size = rand(8, 18);
-        this.speed = rand(0.35, 1.05);
-        this.sway = rand(0.4, 1.6);
-        this.swaySpeed = rand(0.006, 0.02);
+        this.y = randomY ? Math.random() * height : rand(-40, -10);
+        this.shape = pickShape();
+        this.px = rand(2, 4); // pixel size
+        this.speed = rand(0.3, 0.9);
+        this.sway = rand(0.3, 1.2);
+        this.swaySpeed = rand(0.005, 0.015);
         this.angle = Math.random() * Math.PI * 2;
-        this.rotation = Math.random() * Math.PI * 2;
-        this.rotationSpeed = rand(-0.012, 0.012);
-        this.opacity = rand(0.25, 0.7);
-        this.type = TYPES[(Math.random() * TYPES.length) | 0];
-        const pal = PALETTE[(Math.random() * PALETTE.length) | 0];
-        this.fill = pal[1];
-        this.hi = pal[0];
+        this.rotation = 0;
+        this.rotationSpeed = rand(-0.008, 0.008);
+        this.opacity = rand(0.35, 0.85);
+        this.twinkle = Math.random() * Math.PI * 2;
+        this.twinkleSpeed = rand(0.02, 0.05);
       }
       update() {
         this.y += this.speed;
         this.angle += this.swaySpeed;
-        this.rotation += this.rotationSpeed;
         this.x += Math.sin(this.angle) * this.sway;
-        if (this.y > height + 40) this.reset(false);
+        this.rotation += this.rotationSpeed;
+        this.twinkle += this.twinkleSpeed;
+        if (this.y > height + 30) this.reset(false);
       }
       draw() {
-        const s = this.size;
+        const flicker = 0.85 + 0.15 * Math.sin(this.twinkle);
         ctx.save();
-        ctx.globalAlpha = this.opacity;
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.rotation);
-
-        if (this.type === 'heart') {
-          const k = s / 16;
-          ctx.beginPath();
-          ctx.moveTo(0, 4 * k);
-          ctx.bezierCurveTo(-9 * k, -3 * k, -4 * k, -11 * k, 0, -6 * k);
-          ctx.bezierCurveTo(4 * k, -11 * k, 9 * k, -3 * k, 0, 4 * k);
-          ctx.fillStyle = this.fill;
-          ctx.fill();
-        } else if (this.type === 'spark') {
-          const k = s / 2;
-          const g = ctx.createRadialGradient(0, 0, 0, 0, 0, k);
-          g.addColorStop(0, this.hi);
-          g.addColorStop(1, 'rgba(255,255,255,0)');
-          ctx.fillStyle = g;
-          ctx.beginPath();
-          ctx.arc(0, 0, k, 0, Math.PI * 2);
-          ctx.fill();
-        } else if (this.type === 'leaf') {
-          ctx.beginPath();
-          ctx.ellipse(0, 0, s * 0.75, s * 0.42, 0, 0, Math.PI * 2);
-          ctx.fillStyle = this.fill;
-          ctx.fill();
-          ctx.strokeStyle = this.hi;
-          ctx.lineWidth = Math.max(1, s * 0.08);
-          ctx.beginPath();
-          ctx.moveTo(-s * 0.6, 0);
-          ctx.lineTo(s * 0.6, 0);
-          ctx.stroke();
-        } else {
-          // petal
-          ctx.beginPath();
-          ctx.ellipse(0, 0, s * 0.62, s * 0.36, 0, 0, Math.PI * 2);
-          ctx.fillStyle = this.fill;
-          ctx.fill();
-          ctx.beginPath();
-          ctx.ellipse(-s * 0.1, -s * 0.08, s * 0.3, s * 0.14, 0, 0, Math.PI * 2);
-          ctx.fillStyle = this.hi;
-          ctx.fill();
-        }
+        ctx.globalAlpha = this.opacity * flicker;
+        ctx.translate(snap(this.x, this.px), snap(this.y, this.px));
+        // Snap rotation to 45° steps for pixel feel
+        const snappedRot = Math.round(this.rotation / (Math.PI / 4)) * (Math.PI / 4);
+        ctx.rotate(snappedRot);
+        drawPixelGrid(this.shape.grid, this.shape.colors, this.px);
         ctx.restore();
       }
     }
 
-    const count = coarsePointer ? 16 : 26;
+    const count = coarsePointer ? 14 : 22;
     const particles = Array.from({ length: count }, () => new Particle());
 
     let rafId = null;
@@ -406,14 +458,9 @@
 
     start();
 
+    // Only pause when tab is hidden (canvas is fixed, always visible)
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) stop(); else start();
-    });
-
-    // Pause when scrolled far down — offscreen anyway, saves battery
-    onScroll(() => {
-      const far = window.scrollY > window.innerHeight * 2.5;
-      if (far) stop(); else start();
     });
   })();
 
@@ -433,4 +480,4 @@
     });
   }
 
-  })();
+})();

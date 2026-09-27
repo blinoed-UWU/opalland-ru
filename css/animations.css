@@ -106,23 +106,41 @@
   50%{transform:translateY(-4px) rotate(5deg)}
 }
 
-/* ---------- Donate featured: slow aurora shimmer ---------- */
-.donate-card-featured{
-  background-size:200% 200%;
-  animation:auroraShift 9s ease-in-out infinite;
+/* ---------- Donate featured: slow aurora shimmer (transform-based) ---------- */
+.donate-card-featured::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:linear-gradient(135deg,
+    rgba(255,183,197,.10), rgba(220,201,255,.08) 50%, rgba(183,240,212,.06));
+  transform:translateX(-100%);
+  animation:auroraShift 8s ease-in-out infinite;
+  pointer-events:none;
+  z-index:0;
 }
 @keyframes auroraShift{
-  0%,100%{background-position:0% 50%}
-  50%{background-position:100% 50%}
+  0%,100%{transform:translateX(-100%)}
+  50%{transform:translateX(100%)}
 }
 
-/* ---------- Sponsor perk: subtle pulse ---------- */
+/* ---------- Sponsor perk: subtle pulse (transform-based) ---------- */
 .sponsor-perk{
+  position:relative;
+}
+.sponsor-perk::after{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius:inherit;
+  border:1px solid rgba(183,240,212,.35);
+  opacity:0;
   animation:perkGlow 3.2s ease-in-out infinite;
+  pointer-events:none;
 }
 @keyframes perkGlow{
-  0%,100%{box-shadow:0 0 0 rgba(183,240,212,0)}
-  50%{box-shadow:0 0 18px -4px rgba(183,240,212,.45)}
+  0%,100%{opacity:0;transform:scale(1)}
+  50%{opacity:.7;transform:scale(1.02)}
 }
 
 /* ---------- Scroll-top button pulse ring ---------- */
