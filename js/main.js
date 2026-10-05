@@ -15,7 +15,15 @@
   const onScrollTick = () => {
     for (let i = 0; i < scrollHandlers.length; i++) scrollHandlers[i]();
   };
-  window.addEventListener('scroll', onScrollTick, { passive: true });
+  let scrollScheduled = false;
+  window.addEventListener('scroll', () => {
+    if (scrollScheduled) return;
+    scrollScheduled = true;
+    requestAnimationFrame(() => {
+      scrollScheduled = false;
+      onScrollTick();
+    });
+  }, { passive: true });
   const onScroll = (fn) => { scrollHandlers.push(fn); fn(); };
 
   /* ---------- copy IP ---------- */
@@ -244,6 +252,13 @@
       const target = document.querySelector(href);
       if (!target) return;
       e.preventDefault();
+      // Close mobile menu if open (covers nav links and the CTA button)
+      if (menu && menu.classList.contains('open')) {
+        menu.classList.remove('open');
+        if (burger) burger.setAttribute('aria-expanded', 'false');
+      }
+      // Keep URL hash in sync so sections are deep-linkable
+      if (history.pushState) history.pushState(null, '', href);
       const y = target.getBoundingClientRect().top + window.scrollY;
       window.scrollTo({ top: y, behavior: reduceMotion ? 'auto' : 'smooth' });
     });

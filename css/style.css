@@ -21,6 +21,7 @@
   --pink-dark:#ff9eb5;
   --rose:#ff8fa3;
   --mint:#b7f0d4;
+  --mint-light:#d6f7e6;
   --mint-dark:#8ee2bb;
   --lavender:#dcc9ff;
   --sky:#c2e9ff;
@@ -57,6 +58,15 @@ body{
 
 a{color:inherit;text-decoration:none}
 ::selection{background:rgba(255,183,197,.35);color:#fff}
+
+/* Visible keyboard focus — accessibility */
+:focus{outline:none}
+:focus-visible{
+  outline:3px solid rgba(255,183,197,.85);
+  outline-offset:3px;
+  border-radius:8px;
+}
+.faq-item summary:focus-visible{border-radius:12px}
 
 /* Keep anchored sections clear of the fixed nav */
 section[id],header[id],footer[id]{scroll-margin-top:96px}
@@ -631,7 +641,6 @@ section[id],header[id],footer[id]{scroll-margin-top:96px}
   transition:transform .6s var(--ease-slow);
 }
 .big-card:hover .big-card-art img{transform:scale(1.03) rotate(-.6deg)}
-.art-block, .art-sheep, .art-flower{display:none}
 
 /* fallback if image fails to load */
 .big-card-art:empty::before{
@@ -1102,7 +1111,7 @@ section[id],header[id],footer[id]{scroll-margin-top:96px}
   border-radius:10px;
   background:rgba(183,240,212,.10);
   border:1px solid rgba(183,240,212,.18);
-  color:var(--mint-light, #b7f0d4);
+  color:var(--mint-light);
   font-size:13px;
   font-weight:700;
 }
@@ -1423,7 +1432,6 @@ section[id],header[id],footer[id]{scroll-margin-top:96px}
    ============================================================ */
 .reveal{
   opacity:0;
-  will-change:opacity, transform;
 }
 .reveal.in{
   animation:revealUp .8s var(--ease-slow) both;
@@ -1491,5 +1499,7 @@ section[id],header[id],footer[id]{scroll-margin-top:96px}
   .reveal{opacity:1}
   .reveal.in{animation:none}
   .scroll-progress{transition:none}
+  .status-dot-online,
+  .heart-pulse{animation:none}
   html{scroll-behavior:auto}
 }

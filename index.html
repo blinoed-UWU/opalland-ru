@@ -26,6 +26,7 @@
 
   <!-- Icons -->
   <link rel="icon" href="assets/avatar.jpg?v=3" type="image/jpeg" />
+  <link rel="apple-touch-icon" href="assets/avatar.jpg?v=3" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -34,10 +35,17 @@
 
   <!-- Critical asset preloads -->
   <link rel="preload" as="image" href="assets/bg.jpg" fetchpriority="high" />
-  <link rel="preload" as="image" href="assets/avatar.jpg?v=3" />
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/animations.css" />
+
+  <!-- No-JS fallback: reveal animations depend on JS, show everything without it -->
+  <noscript>
+    <style>
+      .reveal{opacity:1}
+      #serverStatus{display:none}
+    </style>
+  </noscript>
 
   <!-- Structured data -->
   <script type="application/ld+json">
