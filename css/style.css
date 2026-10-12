@@ -475,7 +475,7 @@ section[id],header[id],footer[id]{scroll-margin-top:96px}
 @keyframes marquee{to{transform:translateX(-50%)}}
 
 /* ============================================================
-   SEASON 2 — announcement, countdown
+   SEASON 2 — announcement section
    ============================================================ */
 .season-badge{
   display:inline-flex;
@@ -518,55 +518,6 @@ section[id],header[id],footer[id]{scroll-margin-top:96px}
   text-align:center;
   max-width:720px;
   margin:0 auto;
-}
-.countdown{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:14px;
-  margin-top:38px;
-}
-.countdown-tile{
-  min-width:96px;
-  padding:20px 12px 14px;
-  border-radius:var(--radius-sm);
-  background:rgba(24,18,27,.62);
-  border:1px solid rgba(183,240,212,.24);
-  backdrop-filter:blur(18px) saturate(120%);
-  -webkit-backdrop-filter:blur(18px) saturate(120%);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,.08) inset,
-    0 12px 34px -18px rgba(0,0,0,.5);
-  transition:border-color .4s var(--ease), box-shadow .4s var(--ease);
-}
-.countdown-value{
-  display:block;
-  font-family:'VT323',monospace;
-  font-size:46px;
-  line-height:1;
-  color:var(--mint-light);
-  text-shadow:0 0 20px rgba(183,240,212,.3);
-  font-variant-numeric:tabular-nums;
-}
-.countdown-label{
-  display:block;
-  margin-top:8px;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  color:var(--ink-dim);
-}
-.countdown.is-open .countdown-tile{
-  border-color:rgba(183,240,212,.55);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,.08) inset,
-    0 0 28px rgba(183,240,212,.18);
-}
-.countdown-note{
-  margin-top:16px;
-  font-size:13px;
-  color:var(--ink-dim);
 }
 
 .season-grid{
@@ -1629,9 +1580,6 @@ section[id],header[id],footer[id]{scroll-margin-top:96px}
   .nav-cta{margin-left:auto;margin-right:52px}
   .features,.rules-grid,.contacts,.steps,.services-grid{grid-template-columns:1fr}
   .season-grid{grid-template-columns:1fr}
-  .countdown{gap:10px}
-  .countdown-tile{min-width:74px;padding:14px 8px 10px}
-  .countdown-value{font-size:34px}
   .hero{padding:110px 16px 70px}
   .hero-card{padding:32px 22px}
   .section{padding:70px 16px}
@@ -1654,6 +1602,5 @@ section[id],header[id],footer[id]{scroll-margin-top:96px}
   .status-dot-online,
   .heart-pulse{animation:none}
   .season-dot{animation:none}
-  .countdown.is-open .countdown-tile{transition:none}
   html{scroll-behavior:auto}
 }
