@@ -475,6 +475,153 @@ section[id],header[id],footer[id]{scroll-margin-top:96px}
 @keyframes marquee{to{transform:translateX(-50%)}}
 
 /* ============================================================
+   SEASON 2 — announcement, countdown
+   ============================================================ */
+.season-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 18px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:800;
+  color:#3f6b55;
+  background:linear-gradient(120deg,var(--mint-light),#fff);
+  border:1px solid rgba(183,240,212,.4);
+  margin-bottom:14px;
+  box-shadow:0 4px 14px rgba(183,240,212,.22);
+  text-decoration:none;
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+}
+.season-badge:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 22px rgba(183,240,212,.32);
+}
+.season-dot{
+  width:9px;
+  height:9px;
+  border-radius:3px;
+  background:var(--mint-dark);
+  box-shadow:0 0 0 0 rgba(142,226,187,.6);
+  animation:seasonPulse 2s var(--ease) infinite;
+}
+@keyframes seasonPulse{
+  0%{box-shadow:0 0 0 0 rgba(142,226,187,.55)}
+  70%{box-shadow:0 0 0 9px rgba(142,226,187,0)}
+  100%{box-shadow:0 0 0 0 rgba(142,226,187,0)}
+}
+
+.section-season{
+  background:linear-gradient(180deg,rgba(183,240,212,.06) 0%,transparent 55%);
+}
+.season-hero{
+  text-align:center;
+  max-width:720px;
+  margin:0 auto;
+}
+.countdown{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:14px;
+  margin-top:38px;
+}
+.countdown-tile{
+  min-width:96px;
+  padding:20px 12px 14px;
+  border-radius:var(--radius-sm);
+  background:rgba(24,18,27,.62);
+  border:1px solid rgba(183,240,212,.24);
+  backdrop-filter:blur(18px) saturate(120%);
+  -webkit-backdrop-filter:blur(18px) saturate(120%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.08) inset,
+    0 12px 34px -18px rgba(0,0,0,.5);
+  transition:border-color .4s var(--ease), box-shadow .4s var(--ease);
+}
+.countdown-value{
+  display:block;
+  font-family:'VT323',monospace;
+  font-size:46px;
+  line-height:1;
+  color:var(--mint-light);
+  text-shadow:0 0 20px rgba(183,240,212,.3);
+  font-variant-numeric:tabular-nums;
+}
+.countdown-label{
+  display:block;
+  margin-top:8px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--ink-dim);
+}
+.countdown.is-open .countdown-tile{
+  border-color:rgba(183,240,212,.55);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.08) inset,
+    0 0 28px rgba(183,240,212,.18);
+}
+.countdown-note{
+  margin-top:16px;
+  font-size:13px;
+  color:var(--ink-dim);
+}
+
+.season-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+  margin-top:60px;
+}
+.season-card{
+  padding:30px 24px;
+  border-radius:var(--radius-sm);
+  background:rgba(24,18,27,.62);
+  border:1px solid var(--stroke);
+  backdrop-filter:blur(18px) saturate(120%);
+  -webkit-backdrop-filter:blur(18px) saturate(120%);
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease), background .35s, border-color .35s;
+  box-shadow:0 1px 0 rgba(255,255,255,.08) inset;
+  position:relative;
+  overflow:hidden;
+}
+.season-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),
+    rgba(183,240,212,.14), transparent 60%);
+  opacity:0;
+  transition:opacity .35s ease;
+  pointer-events:none;
+}
+.season-card:hover::after{opacity:1}
+.season-card:hover{
+  transform:translateY(-6px);
+  background:rgba(34,26,37,.78);
+  border-color:rgba(183,240,212,.32);
+  box-shadow:0 20px 50px -20px rgba(183,240,212,.28);
+}
+.season-card code,
+.feature-text code,
+.faq-body code{
+  font-family:'VT323',monospace;
+  font-size:16px;
+  color:var(--mint-light);
+  background:rgba(183,240,212,.08);
+  padding:1px 7px;
+  border-radius:6px;
+  border:1px solid rgba(183,240,212,.18);
+}
+.season-cta{
+  text-align:center;
+  margin-top:48px;
+}
+
+/* ============================================================
    SECTIONS
    ============================================================ */
 .section{padding:100px 20px}
@@ -1451,6 +1598,7 @@ section[id],header[id],footer[id]{scroll-margin-top:96px}
   .steps{grid-template-columns:repeat(2,1fr)}
   .big-card{grid-template-columns:1fr}
   .donate-single .donate-card{max-width:480px}
+  .season-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:700px){
   .main-nav{padding:8px 10px 8px 14px}
@@ -1480,6 +1628,10 @@ section[id],header[id],footer[id]{scroll-margin-top:96px}
   .nav-links a{text-align:center;padding:12px 16px}
   .nav-cta{margin-left:auto;margin-right:52px}
   .features,.rules-grid,.contacts,.steps,.services-grid{grid-template-columns:1fr}
+  .season-grid{grid-template-columns:1fr}
+  .countdown{gap:10px}
+  .countdown-tile{min-width:74px;padding:14px 8px 10px}
+  .countdown-value{font-size:34px}
   .hero{padding:110px 16px 70px}
   .hero-card{padding:32px 22px}
   .section{padding:70px 16px}
@@ -1501,5 +1653,7 @@ section[id],header[id],footer[id]{scroll-margin-top:96px}
   .scroll-progress{transition:none}
   .status-dot-online,
   .heart-pulse{animation:none}
+  .season-dot{animation:none}
+  .countdown.is-open .countdown-tile{transition:none}
   html{scroll-behavior:auto}
 }

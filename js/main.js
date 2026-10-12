@@ -8,6 +8,12 @@
   const reduceMotion = reduceMotionMQ.matches;
   const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
 
+  /* Season 2 opening: 13 Oct 2026 ~19:00 MSK (leading poll option in TG) */
+  const SEASON_START = new Date('2026-10-13T19:00:00+03:00').getTime();
+  /* Set by the countdown module, called by the status module when the
+     server answers online — the season is considered open at that point. */
+  let notifySeasonOpen = null;
+
   /* ----------------------------------------------------------
      Shared rAF-throttled scroll dispatcher
      ---------------------------------------------------------- */
@@ -126,12 +132,78 @@
       } else {
         text.textContent = 'Сервер онлайн';
       }
+      // Live server after the wipe = Season 2 is open
+      if (typeof notifySeasonOpen === 'function') notifySeasonOpen();
     } else {
       dot.classList.remove('status-dot-loading');
       dot.classList.add('status-dot-offline');
-      text.textContent = 'Сервер сейчас offline';
+      text.textContent = Date.now() < SEASON_START
+        ? 'Сервер offline · готовимся к Сезону 2'
+        : 'Сервер сейчас offline';
     }
     el.setAttribute('data-ready', 'true');
+  })();
+
+  /* ---------- countdown to Season 2 opening ----------
+     While the server is offline it counts down to 13 Oct 2026 ~19:00 MSK.
+     The moment the server answers online (or the target time passes),
+     it flips to a "season is open" state. Ticks are skipped in hidden tabs. */
+  (function initCountdown() {
+    const el = document.getElementById('countdown');
+    const note = document.getElementById('countdownNote');
+    if (!el || !note) return;
+
+    const badgeText = document.querySelector('.season-badge-text');
+    const nodes = {
+      d: document.getElementById('cdDays'),
+      h: document.getElementById('cdHours'),
+      m: document.getElementById('cdMinutes'),
+      s: document.getElementById('cdSeconds')
+    };
+    const pad = (n) => (n < 10 ? '0' + n : String(n));
+    let opened = false;
+
+    function flipOpen() {
+      if (opened) return true;
+      opened = true;
+      el.classList.add('is-open');
+      if (nodes.d) nodes.d.textContent = '00';
+      if (nodes.h) nodes.h.textContent = '00';
+      if (nodes.m) nodes.m.textContent = '00';
+      if (nodes.s) nodes.s.textContent = '00';
+      note.textContent = 'Сезон 2 открыт — добро пожаловать!';
+      if (badgeText) badgeText.textContent = 'Сезон 2 открыт — заходи!';
+      return true;
+    }
+
+    function render() {
+      if (opened) return true;
+      const diff = SEASON_START - Date.now();
+      if (diff <= 0) return flipOpen();
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+      if (nodes.d) nodes.d.textContent = days;
+      if (nodes.h) nodes.h.textContent = pad(hours);
+      if (nodes.m) nodes.m.textContent = pad(minutes);
+      if (nodes.s) nodes.s.textContent = pad(seconds);
+      return false;
+    }
+
+    // Server came online → season is open, regardless of the planned date
+    notifySeasonOpen = flipOpen;
+
+    render();
+    if (opened) return;
+    note.textContent = 'до открытия · точное время уточняется в Telegram';
+    const timer = setInterval(() => {
+      if (document.hidden) return;
+      if (render()) clearInterval(timer);
+    }, 1000);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && render()) clearInterval(timer);
+    });
   })();
 
   /* ---------- scroll progress bar (GPU: scaleX, no layout) ---------- */
@@ -193,7 +265,7 @@
   }
 
   /* ---------- staggered reveal for grids ---------- */
-  ['.features', '.rules-grid', '.steps', '.services-grid', '.contacts', '.faq-list']
+  ['.features', '.rules-grid', '.steps', '.services-grid', '.contacts', '.faq-list', '.season-grid']
     .forEach(sel => {
       document.querySelectorAll(sel).forEach(grid => {
         Array.from(grid.children).forEach((child, i) => {
@@ -481,7 +553,7 @@
      Lightweight tilt-glow on cards (pointer devices only)
      ---------------------------------------------------------- */
   if (!coarsePointer && !reduceMotion) {
-    const cards = document.querySelectorAll('.feature-card, .rule-card, .contact-card, .service-card, .donate-card');
+    const cards = document.querySelectorAll('.feature-card, .rule-card, .contact-card, .service-card, .donate-card, .season-card');
     cards.forEach(card => {
       card.addEventListener('pointermove', (e) => {
         const r = card.getBoundingClientRect();

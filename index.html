@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#1a1218" />
   <title>Opal Land — уютный Minecraft SMP</title>
-  <meta name="description" content="Opal Land — чистый SMP сервер Minecraft. Java 1.21.11, милое сообщество, надёжный античит и уютная атмосфера. IP: opalland.20tps.ru" />
+  <meta name="description" content="Opal Land — уютный Minecraft SMP. Сезон 2 уже идёт: ванильное SMP без /home и /rtp, легендарные оружия, милое сообщество. IP: opalland.20tps.ru" />
 
   <!-- SEO -->
   <link rel="canonical" href="https://blinoed-uwu.github.io/opalland-ru/" />
@@ -44,6 +44,7 @@
     <style>
       .reveal{opacity:1}
       #serverStatus{display:none}
+      #countdown{display:none}
     </style>
   </noscript>
 
@@ -84,6 +85,7 @@
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-links" id="navMenu">
+      <li><a href="#season">Сезон 2</a></li>
       <li><a href="#about">О сервере</a></li>
       <li><a href="#rules">Правила</a></li>
       <li><a href="#donate">Донаты</a></li>
@@ -101,6 +103,10 @@
         <span class="status-dot status-dot-loading"></span>
         <span class="status-text">Проверяем статус сервера…</span>
       </div>
+      <a href="#season" class="season-badge reveal">
+        <span class="season-dot" aria-hidden="true"></span>
+        <span class="season-badge-text">Сезон 2 · новый вайп</span>
+      </a>
       <div class="hero-pretitle">
         <span class="heart-pulse"><span class="emoji" aria-hidden="true">💗</span></span>
         уютный Minecraft SMP
@@ -110,8 +116,9 @@
         <span class="title-line title-line-2">Land</span>
       </h1>
       <p class="hero-desc">
-        Чистое выживание без лишнего. Только ты, твои друзья и бесконечный кубический мир.
-        Без экономики и читеров — только честный SMP в самом мягком и уютном формате.
+        Чистое выживание без лишнего. Новый сезон — ванильное SMP: только ты, твои друзья
+        и бесконечный кубический мир. Без экономики и читеров — только честная игра
+        в самом мягком и уютном формате.
       </p>
       <div class="hero-actions">
         <a href="#join" class="btn btn-primary">Как зайти</a>
@@ -137,20 +144,85 @@
       <span>чистый SMP</span>
       <span>милое сообщество</span>
       <span>анти-чит</span>
-      <span>донат-привилегии</span>
-      <span>без экономики</span>
+      <span>сезон 2 · вайп</span>
+      <span>ванильное SMP</span>
       <span>голосовой чат</span>
-      <span>уютные вайпы</span>
+      <span>легендарные оружия</span>
       <span>Java 1.21.11</span>
       <span>чистый SMP</span>
       <span>милое сообщество</span>
       <span>анти-чит</span>
-      <span>донат-привилегии</span>
-      <span>без экономики</span>
+      <span>сезон 2 · вайп</span>
+      <span>ванильное SMP</span>
       <span>голосовой чат</span>
-      <span>уютные вайпы</span>
+      <span>легендарные оружия</span>
     </div>
   </div>
+
+  <!-- Сезон 2: анонс нового вайпа -->
+  <section class="section section-season" id="season">
+    <div class="container">
+      <div class="season-hero reveal">
+        <span class="section-tag">новости канала</span>
+        <h2 class="section-title">Сезон 2 — ванильное SMP</h2>
+        <p class="section-subtitle">
+          Мир перерождён: сервер переработан, и новый сезон стартует прямо сейчас.
+          Самое время присоединиться и застать его с самых первых дней!
+        </p>
+        <div class="countdown" id="countdown" role="timer" aria-label="До открытия сезона">
+          <div class="countdown-tile">
+            <span class="countdown-value" id="cdDays">–</span>
+            <span class="countdown-label">дней</span>
+          </div>
+          <div class="countdown-tile">
+            <span class="countdown-value" id="cdHours">–</span>
+            <span class="countdown-label">часов</span>
+          </div>
+          <div class="countdown-tile">
+            <span class="countdown-value" id="cdMinutes">–</span>
+            <span class="countdown-label">минут</span>
+          </div>
+          <div class="countdown-tile">
+            <span class="countdown-value" id="cdSeconds">–</span>
+            <span class="countdown-label">секунд</span>
+          </div>
+        </div>
+        <p class="countdown-note" id="countdownNote">подробности старта — в Telegram-канале</p>
+
+      </div>
+
+      <div class="season-grid">
+        <div class="season-card reveal">
+          <div class="feature-icon" aria-hidden="true"><span class="emoji" aria-hidden="true">🌱</span></div>
+          <h3 class="feature-title">Ванильное SMP</h3>
+          <p class="feature-text">
+            Новый сезон без команд <code>/home</code>, <code>/rtp</code> и телепортов.
+            Дороги, вагонетки и лошади вместо варпа — честное выживание, как в старые добрые времена.
+          </p>
+        </div>
+        <div class="season-card reveal">
+          <div class="feature-icon" aria-hidden="true"><span class="emoji" aria-hidden="true">⚔️</span></div>
+          <h3 class="feature-title">Легендарные оружия</h3>
+          <p class="feature-text">
+            Легендарки подтверждали голосованием в канале (71% «да»). Каждого предмета
+            можно скрафтить максимум две штуки — гонка за рецептами начинается со старта сезона.
+          </p>
+        </div>
+        <div class="season-card reveal">
+          <div class="feature-icon" aria-hidden="true"><span class="emoji" aria-hidden="true">🌍</span></div>
+          <h3 class="feature-title">Свежий мир</h3>
+          <p class="feature-text">
+            Мир только что перегенерирован: нет ни одной постройки, а все игроки
+            начинают с нуля. Равные условия для каждого — успей застать старт сезона.
+          </p>
+        </div>
+      </div>
+
+      <div class="season-cta reveal">
+        <a href="https://t.me/opal_land" target="_blank" class="btn btn-primary" rel="noopener">Следить за новостями в Telegram</a>
+      </div>
+    </div>
+  </section>
 
   <!-- О сервере -->
   <section class="section" id="about">
@@ -169,8 +241,8 @@
           <div class="feature-icon" aria-hidden="true"><span class="emoji" aria-hidden="true">🌸</span></div>
           <h3 class="feature-title">Чистый SMP</h3>
           <p class="feature-text">
-            Никакой экономики и донат-валют. Все ресурсы получены честно,
-            платные привилегии не дают PvP-преимуществ, а города и торговля
+            Никакой экономики и донат-валют. В новом сезоне — ванильное выживание
+            без <code>/home</code>, <code>/rtp</code> и телепортов, а города и торговля
             строятся на доверии и договорённостях.
           </p>
         </div>
@@ -445,6 +517,17 @@
       <div class="faq-list">
         <details class="faq-item reveal">
           <summary>
+            <span>Что нового в Сезоне 2?</span>
+            <span class="faq-arrow" aria-hidden="true">→</span>
+          </summary>
+          <div class="faq-body">
+            <p>Новый сезон уже идёт: ванильное SMP без <code>/home</code>, <code>/rtp</code>
+            и телепортов, обновлённые легендарные оружия (максимум 2 крафта каждого) и полностью свежий мир.
+            Что меняется дальше — всегда анонсируем в <a href="https://t.me/opal_land" target="_blank" rel="noopener">Telegram-канале</a>.</p>
+          </div>
+        </details>
+        <details class="faq-item reveal">
+          <summary>
             <span>Какая версия Minecraft нужна?</span>
             <span class="faq-arrow" aria-hidden="true">→</span>
           </summary>
@@ -490,7 +573,7 @@
           </summary>
           <div class="faq-body">
             <p>Вайпы редкие и уютные — только когда мир действительно исчерпал себя.
-            Даты всегда анонсируются заранее в Telegram-канале.</p>
+            Сезон 2 только что стартовал со свежим миром. Даты всегда анонсируются заранее в Telegram-канале.</p>
           </div>
         </details>
         <details class="faq-item reveal">
